@@ -1,6 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable, catchError, map, of } from 'rxjs';
+import { Observable, catchError, filter, fromEvent, map, of, tap } from 'rxjs';
 import { environment } from 'src/environments/envitonment';
 import {
   Locality,
@@ -17,7 +17,15 @@ export class CartaPorteService {
   });
   private urlCatalogs: string = `${environment.facturama.baseURL}/catalogs`;
 
+  public lastKey?: string;
+
   constructor(private http: HttpClient) {}
+
+  public saveKeyInLocalStorage(key: string): void {
+    localStorage.removeItem('key');
+    localStorage.setItem('key', key);
+    this.lastKey = key;
+  }
 
   public getUbicationByPostalCode(postalCode: string): Observable<Ubication> {
     const headers = this.authHeader;

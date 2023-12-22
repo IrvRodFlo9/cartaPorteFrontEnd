@@ -32,25 +32,25 @@ export class CompleteComponent implements OnInit {
   public localities: Locality[] = [];
 
   public form: FormGroup = this.fb.group({
-    permission: ['1', [Validators.required]],
-    numberPermission: ['1', [Validators.required]],
-    vehicularConfig: ['1', [Validators.required]],
-    weight: ['1', [Validators.required]],
-    plate: ['1', [Validators.required]],
-    model: ['1', [Validators.required]],
-    insurance: ['1', [Validators.required]],
-    insurancePolicy: ['1', [Validators.required]],
-    name: ['1', [Validators.required]],
-    rfc: ['1', [Validators.required]],
-    licence: ['1', [Validators.required]],
+    permission: ['TPAF01', [Validators.required]],
+    numberPermission: ['NumPermisoSCT1', [Validators.required]],
+    vehicularConfig: ['VL', [Validators.required]],
+    weight: ['5', [Validators.required]],
+    plate: ['plac892', [Validators.required]],
+    model: ['2020', [Validators.required]],
+    insurance: ['Qualitas', [Validators.required]],
+    insurancePolicy: ['123456789', [Validators.required]],
+    name: ['NombreFigura1', [Validators.required]],
+    rfc: ['EKU9003173C9', [Validators.required]],
+    licence: ['NumLicencia1', [Validators.required]],
     street: ['1', [Validators.required]],
     extNumber: ['', [Validators.required]],
     intNumber: [''],
-    postalCode: ['', [Validators.required]],
+    postalCode: ['43650', [Validators.required]],
     neighborhood: ['', [Validators.required]],
     locality: ['', [Validators.required]],
     municipality: ['', [Validators.required]],
-    state: ['', [Validators.required]],
+    state: ['HID', [Validators.required]],
     country: ['MEX', [Validators.required]],
     reference: [''],
   });
@@ -67,6 +67,8 @@ export class CompleteComponent implements OnInit {
     this.form.controls['municipality'].disable();
     this.form.controls['locality'].disable();
     this.form.controls['neighborhood'].disable();
+
+    this.cartaPorteService.saveKeyInLocalStorage(this.key!);
 
     this.cartaPorteService
       .getMexicanStates()
@@ -130,8 +132,6 @@ export class CompleteComponent implements OnInit {
   }
 
   public onSubmit(): void {
-    if (this.form.invalid) return;
-
     const autotransportJSON = this.buildAutotransport();
     const transportFigureJSON = [this.buildTransportFigure()];
 

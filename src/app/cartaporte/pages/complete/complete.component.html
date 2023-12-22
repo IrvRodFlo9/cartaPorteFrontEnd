@@ -87,25 +87,6 @@
         <input matInput formControlName="licence" placeholder="Licencia" />
       </mat-form-field>
 
-      <mat-form-field appearance="outline" class="span-2">
-        <mat-label>Calle</mat-label>
-        <input
-          matInput
-          formControlName="street"
-          placeholder="Ej. Av. Madero 125"
-        />
-      </mat-form-field>
-
-      <mat-form-field appearance="outline">
-        <mat-label>Número Exterior</mat-label>
-        <input matInput formControlName="extNumber" placeholder="Ej. 1" />
-      </mat-form-field>
-
-      <mat-form-field appearance="outline">
-        <mat-label>Número Interior</mat-label>
-        <input matInput formControlName="intNumber" placeholder="Ej. 3" />
-      </mat-form-field>
-
       <mat-form-field appearance="outline">
         <mat-label>Código Postal</mat-label>
         <input
@@ -114,42 +95,6 @@
           formControlName="postalCode"
           placeholder="Ej. 42184"
         />
-      </mat-form-field>
-
-      <mat-form-field appearance="outline">
-        <mat-label>Colonia</mat-label>
-        <mat-select formControlName="neighborhood">
-          <mat-option
-            *ngFor="let neighborhood of neighborhoods"
-            [value]="neighborhood.Value"
-          >
-            {{ neighborhood.Name }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-
-      <mat-form-field appearance="outline">
-        <mat-label>Localidad</mat-label>
-        <mat-select formControlName="locality">
-          <mat-option
-            *ngFor="let locality of localities"
-            [value]="locality.Value"
-          >
-            {{ locality.Name }}
-          </mat-option>
-        </mat-select>
-      </mat-form-field>
-
-      <mat-form-field appearance="outline">
-        <mat-label>Municipio</mat-label>
-        <mat-select formControlName="municipality">
-          <mat-option
-            *ngFor="let municipality of municipalities"
-            [value]="municipality.Value"
-          >
-            {{ municipality.Name }}
-          </mat-option>
-        </mat-select>
       </mat-form-field>
 
       <mat-form-field appearance="outline">
@@ -162,22 +107,6 @@
             {{ state.Name }}
           </mat-option>
         </mat-select>
-      </mat-form-field>
-
-      <mat-form-field appearance="outline">
-        <mat-label>País</mat-label>
-        <mat-select formControlName="country">
-          <mat-option value="MEX">México</mat-option>
-        </mat-select>
-      </mat-form-field>
-
-      <mat-form-field appearance="outline" class="span-2">
-        <mat-label>Referencia</mat-label>
-        <textarea
-          matInput
-          formControlName="reference"
-          placeholder="Información de referencia"
-        ></textarea>
       </mat-form-field>
     </fieldset>
 

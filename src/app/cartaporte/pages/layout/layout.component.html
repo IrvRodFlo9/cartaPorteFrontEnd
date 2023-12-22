@@ -6,7 +6,7 @@
     <nav>
       <a routerLink="list" (click)="drawer.toggle()">Historial</a>
       <a routerLink="complete/#TUL-1023-201223" (click)="drawer.toggle()">
-        Completar Carta Porte: #TUL-1023-201223
+        Completar Carta Porte
       </a>
     </nav>
   </mat-drawer>
@@ -20,7 +20,7 @@
       >
         <mat-icon>menu</mat-icon>
       </button>
-      <h1>{{ title }}</h1>
+      <h1 *ngIf="title">{{ title }}</h1>
     </mat-toolbar>
     <router-outlet></router-outlet>
   </mat-drawer-content>

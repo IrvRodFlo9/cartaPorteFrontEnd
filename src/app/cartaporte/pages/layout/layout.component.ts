@@ -1,7 +1,8 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
 
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { Subscription, distinctUntilChanged, filter, map } from 'rxjs';
+import { CartaPorteService } from '../../services/cartaporte.service';
 
 @Component({
   selector: 'app-layout',
@@ -11,11 +12,13 @@ import { Subscription, distinctUntilChanged, filter, map } from 'rxjs';
 export class LayoutComponent implements OnInit, OnDestroy {
   private routerEvent: Subscription = new Subscription();
 
+  public lastKey?: string;
   public title?: string;
 
   constructor(
     private readonly activatedRouter: ActivatedRoute,
-    private readonly router: Router
+    private readonly router: Router,
+    private cartaPorteService: CartaPorteService
   ) {}
 
   ngOnInit(): void {
