@@ -1,8 +1,10 @@
-import { ChangeDetectorRef, Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { Subscription, distinctUntilChanged, filter, map } from 'rxjs';
+
 import { CartaPorteService } from '../../services/cartaporte.service';
+import { LocalStorageService } from '../../services/localStorage.service';
 
 @Component({
   selector: 'app-layout',
@@ -16,9 +18,9 @@ export class LayoutComponent implements OnInit, OnDestroy {
   public title?: string;
 
   constructor(
+    private localStorageService: LocalStorageService,
     private readonly activatedRouter: ActivatedRoute,
-    private readonly router: Router,
-    private cartaPorteService: CartaPorteService
+    private readonly router: Router
   ) {}
 
   ngOnInit(): void {
@@ -32,10 +34,16 @@ export class LayoutComponent implements OnInit, OnDestroy {
         distinctUntilChanged()
       )
       .subscribe(() => this.setTitle());
+
+    this.localStorageService.loadLocalStorage();
   }
 
   ngOnDestroy(): void {
     this.routerEvent.unsubscribe();
+  }
+
+  public get keyHistory(): string[] {
+    return this.localStorageService.keysHistory;
   }
 
   private setTitle(): void {

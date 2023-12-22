@@ -5,8 +5,12 @@
     </mat-toolbar>
     <nav>
       <a routerLink="list" (click)="drawer.toggle()">Historial</a>
-      <a routerLink="complete/#TUL-1023-201223" (click)="drawer.toggle()">
-        Completar Carta Porte
+      <a
+        *ngFor="let key of keyHistory"
+        [routerLink]="'complete/' + key"
+        (click)="drawer.toggle()"
+      >
+        Completar Carta Porte {{ key }}
       </a>
     </nav>
   </mat-drawer>

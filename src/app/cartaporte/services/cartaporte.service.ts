@@ -17,15 +17,7 @@ export class CartaPorteService {
   });
   private urlCatalogs: string = `${environment.facturama.baseURL}/catalogs`;
 
-  public lastKey?: string;
-
   constructor(private http: HttpClient) {}
-
-  public saveKeyInLocalStorage(key: string): void {
-    localStorage.removeItem('key');
-    localStorage.setItem('key', key);
-    this.lastKey = key;
-  }
 
   public downloadFile(filename: string): void {
     const fileUrl = `assets/${filename}`;

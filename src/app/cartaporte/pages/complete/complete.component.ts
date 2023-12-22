@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { CartaPorteService } from '../../services/cartaporte.service';
 import {
@@ -14,17 +14,20 @@ import {
   FormGroup,
   Validators,
 } from '@angular/forms';
-import { tap } from 'rxjs';
+import { Subscription, tap } from 'rxjs';
 import { Autotransport } from '../../interfaces/autotransport-interface';
 import { TransportFigure } from '../../interfaces/transport-figure-interface';
+import { LocalStorageService } from '../../services/localStorage.service';
 
 @Component({
   selector: 'app-complete',
   templateUrl: './complete.component.html',
   styleUrls: ['./complete.component.scss'],
 })
-export class CompleteComponent implements OnInit {
-  public key?: string;
+export class CompleteComponent implements OnInit, OnDestroy {
+  private routeSubscription!: Subscription;
+
+  public key: string = '';
 
   public states: State[] = [];
   public municipalities: Municipality[] = [];
@@ -59,20 +62,26 @@ export class CompleteComponent implements OnInit {
     private cartaPorteService: CartaPorteService,
     private fb: FormBuilder,
     private route: ActivatedRoute,
-    private router: Router
+    private router: Router,
+    private localStorageService: LocalStorageService
   ) {}
 
   ngOnInit() {
-    this.key = this.route.snapshot.params['key'];
+    this.routeSubscription = this.route.params.subscribe((params) => {
+      this.key = params['key'];
+      this.localStorageService.organizeHistory(this.key);
+    });
     this.form.controls['municipality'].disable();
     this.form.controls['locality'].disable();
     this.form.controls['neighborhood'].disable();
 
-    this.cartaPorteService.saveKeyInLocalStorage(this.key!);
-
     this.cartaPorteService
       .getMexicanStates()
       .subscribe((states) => (this.states = states));
+  }
+
+  ngOnDestroy(): void {
+    this.routeSubscription.unsubscribe();
   }
 
   public getInformationByPostalCode(): void {

@@ -69,7 +69,7 @@ export class ListComponent {
 
   constructor(private cartaPorteService: CartaPorteService) {}
 
-  descargarArchivo(filename: string): void {
+  public descargarArchivo(filename: string): void {
     this.cartaPorteService.downloadFile(filename);
   }
 }
