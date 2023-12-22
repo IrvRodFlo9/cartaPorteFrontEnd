@@ -23,8 +23,15 @@ fieldset {
   border-radius: 1rem;
   display: grid;
   gap: 1.5rem;
-  grid-template-columns: repeat(3, 1fr);
   padding: 3rem;
+
+  @include m.tablet {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @include m.desktop {
+    grid-template-columns: repeat(3, 1fr);
+  }
 
   legend {
     font-size: 1.7rem;

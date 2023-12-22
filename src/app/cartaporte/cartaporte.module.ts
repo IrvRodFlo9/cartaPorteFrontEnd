@@ -7,6 +7,7 @@ import { LayoutComponent } from './pages/layout/layout.component';
 import { ListComponent } from './pages/list/list.component';
 import { CompleteComponent } from './pages/complete/complete.component';
 import { GeneratedColorPipe } from './pipes/generated-color.pipe';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [
@@ -15,6 +16,11 @@ import { GeneratedColorPipe } from './pipes/generated-color.pipe';
     CompleteComponent,
     GeneratedColorPipe,
   ],
-  imports: [CartaporteRoutingModule, CommonModule, MaterialModule],
+  imports: [
+    CartaporteRoutingModule,
+    CommonModule,
+    MaterialModule,
+    ReactiveFormsModule,
+  ],
 })
 export class CartaporteModule {}

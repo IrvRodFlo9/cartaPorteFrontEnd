@@ -1,5 +1,5 @@
 <div class="container complete-container">
-  <form>
+  <form [formGroup]="form" (submit)="onSubmit()">
     <h1>
       Clave: <span class="key">{{ key }}</span>
     </h1>
@@ -9,43 +9,59 @@
 
       <mat-form-field appearance="outline">
         <mat-label>Permiso</mat-label>
-        <input matInput placeholder="Placeholder" />
+        <input
+          matInput
+          formControlName="permission"
+          placeholder="Placeholder"
+        />
         <mat-hint>Hint</mat-hint>
       </mat-form-field>
 
       <mat-form-field appearance="outline">
         <mat-label>Número de Permiso</mat-label>
-        <input matInput placeholder="Placeholder" />
+        <input
+          matInput
+          formControlName="numberPermission"
+          placeholder="Placeholder"
+        />
       </mat-form-field>
 
       <mat-form-field appearance="outline">
         <mat-label>Configuración Vehicular</mat-label>
-        <input matInput placeholder="Placeholder" />
+        <input
+          matInput
+          formControlName="vehicularConfig"
+          placeholder="Placeholder"
+        />
       </mat-form-field>
 
       <mat-form-field appearance="outline">
         <mat-label>Peso Bruto (ton)</mat-label>
-        <input matInput placeholder="Placeholder" />
+        <input matInput formControlName="weight" placeholder="Placeholder" />
       </mat-form-field>
 
       <mat-form-field appearance="outline">
         <mat-label>Placa</mat-label>
-        <input matInput placeholder="Placeholder" />
+        <input matInput formControlName="plate" placeholder="Placeholder" />
       </mat-form-field>
 
       <mat-form-field appearance="outline">
         <mat-label>Modelo (año)</mat-label>
-        <input matInput placeholder="Placeholder" />
+        <input matInput formControlName="model" placeholder="Placeholder" />
       </mat-form-field>
 
       <mat-form-field appearance="outline">
         <mat-label>Aseguradora</mat-label>
-        <input matInput placeholder="Placeholder" />
+        <input matInput formControlName="insurance" placeholder="Placeholder" />
       </mat-form-field>
 
       <mat-form-field appearance="outline">
         <mat-label>Poliza de Seguro</mat-label>
-        <input matInput placeholder="Placeholder" />
+        <input
+          matInput
+          formControlName="insurancePolicy"
+          placeholder="Placeholder"
+        />
       </mat-form-field>
     </fieldset>
 
@@ -54,42 +70,47 @@
 
       <mat-form-field appearance="outline">
         <mat-label>Nombre</mat-label>
-        <input matInput placeholder="Placeholder" />
+        <input matInput formControlName="name" placeholder="Placeholder" />
       </mat-form-field>
 
       <mat-form-field appearance="outline">
         <mat-label>RFC</mat-label>
-        <input matInput placeholder="Placeholder" />
+        <input matInput formControlName="rfc" placeholder="Placeholder" />
       </mat-form-field>
 
       <mat-form-field appearance="outline">
         <mat-label>Licencia</mat-label>
-        <input matInput placeholder="Placeholder" />
+        <input matInput formControlName="licence" placeholder="Placeholder" />
       </mat-form-field>
 
       <mat-form-field appearance="outline">
         <mat-label>Calle</mat-label>
-        <input matInput placeholder="Placeholder" />
+        <input matInput formControlName="street" placeholder="Placeholder" />
       </mat-form-field>
 
       <mat-form-field appearance="outline">
         <mat-label>Número Exterior</mat-label>
-        <input matInput placeholder="Placeholder" />
+        <input matInput formControlName="extNumber" placeholder="Placeholder" />
       </mat-form-field>
 
       <mat-form-field appearance="outline">
         <mat-label>Número Interior</mat-label>
-        <input matInput placeholder="Placeholder" />
+        <input matInput formControlName="intNumber" placeholder="Placeholder" />
       </mat-form-field>
 
       <mat-form-field appearance="outline">
         <mat-label>Código Postal</mat-label>
-        <input matInput placeholder="Placeholder" />
+        <input
+          (input)="getInformationByPostalCode()"
+          matInput
+          formControlName="postalCode"
+          placeholder="Placeholder"
+        />
       </mat-form-field>
 
       <mat-form-field appearance="outline">
         <mat-label>Colonia</mat-label>
-        <mat-select>
+        <mat-select formControlName="neighborhood">
           <mat-option
             *ngFor="let neighborhood of neighborhoods"
             [value]="neighborhood.Value"
@@ -101,7 +122,7 @@
 
       <mat-form-field appearance="outline">
         <mat-label>Localidad</mat-label>
-        <mat-select>
+        <mat-select formControlName="locality">
           <mat-option
             *ngFor="let locality of localities"
             [value]="locality.Value"
@@ -113,7 +134,7 @@
 
       <mat-form-field appearance="outline">
         <mat-label>Municipio</mat-label>
-        <mat-select>
+        <mat-select formControlName="municipality">
           <mat-option
             *ngFor="let municipality of municipalities"
             [value]="municipality.Value"
@@ -125,7 +146,10 @@
 
       <mat-form-field appearance="outline">
         <mat-label>Estado</mat-label>
-        <mat-select>
+        <mat-select
+          formControlName="state"
+          (selectionChange)="getLocalitiesAndMunicipalities()"
+        >
           <mat-option *ngFor="let state of states" [value]="state.Value">
             {{ state.Name }}
           </mat-option>
@@ -134,12 +158,18 @@
 
       <mat-form-field appearance="outline">
         <mat-label>País</mat-label>
-        <input matInput placeholder="Pais" />
+        <mat-select formControlName="country">
+          <mat-option value="MEX">México</mat-option>
+        </mat-select>
       </mat-form-field>
 
       <mat-form-field appearance="outline">
         <mat-label>Referencia</mat-label>
-        <textarea matInput placeholder="Placeholder"></textarea>
+        <textarea
+          matInput
+          formControlName="reference"
+          placeholder="Placeholder"
+        ></textarea>
       </mat-form-field>
     </fieldset>
 

@@ -2,12 +2,21 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { CartaPorteService } from '../../services/cartaporte.service';
 import {
+  Locality,
+  Municipality,
   Neighborhood,
   State,
-  Municipality,
-  Locality,
 } from '../../interfaces/catalog-interface';
-import { codeState } from 'src/assets/states-postal-codes';
+
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
+import { tap } from 'rxjs';
+import { Autotransport } from '../../interfaces/autotransport-interface';
+import { TransportFigure } from '../../interfaces/transport-figure-interface';
 
 @Component({
   selector: 'app-complete',
@@ -22,42 +31,230 @@ export class CompleteComponent implements OnInit {
   public neighborhoods: Neighborhood[] = [];
   public localities: Locality[] = [];
 
+  public form: FormGroup = this.fb.group({
+    permission: ['1', [Validators.required]],
+    numberPermission: ['1', [Validators.required]],
+    vehicularConfig: ['1', [Validators.required]],
+    weight: ['1', [Validators.required]],
+    plate: ['1', [Validators.required]],
+    model: ['1', [Validators.required]],
+    insurance: ['1', [Validators.required]],
+    insurancePolicy: ['1', [Validators.required]],
+    name: ['1', [Validators.required]],
+    rfc: ['1', [Validators.required]],
+    licence: ['1', [Validators.required]],
+    street: ['1', [Validators.required]],
+    extNumber: ['', [Validators.required]],
+    intNumber: [''],
+    postalCode: ['', [Validators.required]],
+    neighborhood: ['', [Validators.required]],
+    locality: ['', [Validators.required]],
+    municipality: ['', [Validators.required]],
+    state: ['', [Validators.required]],
+    country: ['MEX', [Validators.required]],
+    reference: [''],
+  });
+
   constructor(
-    private route: ActivatedRoute,
-    private cartaPorteService: CartaPorteService
+    private cartaPorteService: CartaPorteService,
+    private fb: FormBuilder,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit() {
     this.key = this.route.snapshot.params['key'];
-    this.cartaPorteService
-      .getNeighborhoodsByPostalCode('43624')
-      .subscribe((neighborhoods) => (this.neighborhoods = neighborhoods));
-
-    console.log(this.setState('42365'));
+    this.form.controls['municipality'].disable();
+    this.form.controls['locality'].disable();
+    this.form.controls['neighborhood'].disable();
 
     this.cartaPorteService
       .getMexicanStates()
       .subscribe((states) => (this.states = states));
+  }
+
+  public getInformationByPostalCode(): void {
+    const postalCode = this.form.get('postalCode')?.value as string;
+
+    if (postalCode.length === 0) {
+      this.toggleControls([
+        this.form.controls['municipality'] as FormControl,
+        this.form.controls['locality'] as FormControl,
+        this.form.controls['state'] as FormControl,
+      ]);
+    }
+
+    if (postalCode.length !== 5) {
+      this.form.controls['neighborhood'].disable();
+      return;
+    }
 
     this.cartaPorteService
-      .getMunicipalitiesByState('HID')
+      .getNeighborhoodsByPostalCode(postalCode)
+      .pipe(
+        tap(() => this.form.controls['neighborhood'].reset('')),
+        tap(() => this.form.controls['neighborhood'].enable())
+      )
+      .subscribe((neighborhoods) => (this.neighborhoods = neighborhoods));
+
+    this.cartaPorteService
+      .getUbicationByPostalCode(postalCode)
+      .subscribe(({ StateCode, MunicipalityCode, LocationCode }) =>
+        this.getAndSetUbication(
+          StateCode,
+          MunicipalityCode || '',
+          LocationCode || ''
+        )
+      );
+  }
+
+  public getLocalitiesAndMunicipalities(): void {
+    const state = this.form.controls['state'].value;
+    console.log(state);
+
+    this.toggleControls([
+      this.form.controls['municipality'] as FormControl,
+      this.form.controls['locality'] as FormControl,
+    ]);
+
+    this.cartaPorteService
+      .getMunicipalitiesByState(state)
       .subscribe((municipalities) => (this.municipalities = municipalities));
 
     this.cartaPorteService
-      .getLocalitiesByState('HID')
+      .getLocalitiesByState(state)
       .subscribe((localities) => (this.localities = localities));
 
-    this.cartaPorteService
-      .getUbicationByPostalCode('43600')
-      .subscribe((ubication) => console.log(ubication));
+    this.form.controls['municipality'].reset('');
+    this.form.controls['locality'].reset('');
   }
 
-  private setState(postalCode: string) {
-    const idState: string = postalCode.substring(0, 2);
-    const state = codeState.find((item) =>
-      item.range.some((rango) => rango === idState)
-    );
+  public onSubmit(): void {
+    if (this.form.invalid) return;
 
-    return state?.stateCode;
+    const autotransportJSON = this.buildAutotransport();
+    const transportFigureJSON = [this.buildTransportFigure()];
+
+    console.log(JSON.stringify(autotransportJSON));
+    console.log(JSON.stringify(transportFigureJSON));
+  }
+
+  private getAndSetUbication(
+    state: string,
+    municipality: string,
+    locality: string
+  ): void {
+    const stateControl: FormControl = this.form.controls[
+      'state'
+    ] as FormControl;
+
+    const municipalityControl: FormControl = this.form.controls[
+      'municipality'
+    ] as FormControl;
+
+    const localityControl: FormControl = this.form.controls[
+      'locality'
+    ] as FormControl;
+
+    const controls: FormControl[] = [
+      stateControl,
+      municipalityControl,
+      localityControl,
+    ];
+
+    this.toggleControls(controls);
+
+    this.cartaPorteService
+      .getMunicipalitiesByState(state)
+      .subscribe((municipalities) => (this.municipalities = municipalities));
+
+    this.cartaPorteService
+      .getLocalitiesByState(state)
+      .subscribe((localities) => (this.localities = localities));
+
+    stateControl.setValue(state);
+    municipalityControl.setValue(municipality);
+    localityControl.setValue(locality);
+
+    this.toggleControls(controls);
+  }
+
+  private toggleControls(controls: FormControl[]): void {
+    controls.forEach((control) => {
+      if (control.valid) {
+        control.disable();
+      } else {
+        control.enable();
+        control.reset('');
+      }
+    });
+  }
+
+  private buildAutotransport(): Autotransport {
+    const {
+      permission,
+      numberPermission,
+      vehicularConfig,
+      weight,
+      plate,
+      model,
+      insurance,
+      insurancePolicy,
+    } = this.form.value;
+
+    const autotransport: Autotransport = {
+      PermSCT: permission,
+      NumPermisoSCT: numberPermission,
+      IdentificacionVehicular: {
+        ConfigVehicular: vehicularConfig,
+        PesoBrutoVehicular: weight,
+        PlacaVM: plate,
+        AnioModeloVM: model,
+      },
+      Seguros: {
+        AseguraRespCivil: insurance,
+        PolizaRespCivil: insurancePolicy,
+      },
+    };
+
+    return autotransport;
+  }
+
+  private buildTransportFigure(): TransportFigure {
+    const {
+      name,
+      rfc,
+      licence,
+      street,
+      extNumber,
+      intNumber,
+      postalCode,
+      neighborhood,
+      locality,
+      municipality,
+      state,
+      country,
+      reference,
+    } = this.form.value;
+
+    const transportFigure: TransportFigure = {
+      TipoFigura: '01',
+      RFCFigura: rfc,
+      NumLicencia: licence,
+      NombreFigura: name,
+      Domicilio: {
+        Calle: street,
+        NumeroExterior: extNumber,
+        NumeroInterior: intNumber,
+        Colonia: neighborhood,
+        Localidad: locality,
+        Referencia: reference,
+        Municipio: municipality,
+        Estado: state,
+        Pais: country,
+        CodigoPostal: postalCode,
+      },
+    };
+
+    return transportFigure;
   }
 }
