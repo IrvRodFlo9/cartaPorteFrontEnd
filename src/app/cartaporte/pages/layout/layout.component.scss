@@ -1,0 +1,45 @@
+@use "variables" as v;
+@use "mixins" as m;
+
+mat-drawer-container {
+  min-height: 100vh;
+}
+
+mat-drawer {
+  width: 65vw;
+
+  @include m.tablet {
+    width: 22rem;
+  }
+}
+
+nav {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  font-size: 1.5rem;
+
+  a {
+    padding: 1.7rem;
+
+    @include m.desktop {
+      font-size: 1.7rem;
+      transition: all 400ms;
+
+      &:hover {
+        background-color: gray;
+        transform: scale(1.01);
+      }
+    }
+  }
+}
+
+.toolbar-inside {
+  display: flex;
+  justify-content: center;
+}
+
+mat-toolbar {
+  background-color: blue;
+  color: white;
+}

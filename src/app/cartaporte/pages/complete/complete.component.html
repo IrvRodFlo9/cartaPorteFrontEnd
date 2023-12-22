@@ -1,0 +1,148 @@
+<div class="container complete-container">
+  <form>
+    <h1>
+      Clave: <span class="key">{{ key }}</span>
+    </h1>
+
+    <fieldset>
+      <legend>Autotransporte</legend>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Permiso</mat-label>
+        <input matInput placeholder="Placeholder" />
+        <mat-hint>Hint</mat-hint>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Número de Permiso</mat-label>
+        <input matInput placeholder="Placeholder" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Configuración Vehicular</mat-label>
+        <input matInput placeholder="Placeholder" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Peso Bruto (ton)</mat-label>
+        <input matInput placeholder="Placeholder" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Placa</mat-label>
+        <input matInput placeholder="Placeholder" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Modelo (año)</mat-label>
+        <input matInput placeholder="Placeholder" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Aseguradora</mat-label>
+        <input matInput placeholder="Placeholder" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Poliza de Seguro</mat-label>
+        <input matInput placeholder="Placeholder" />
+      </mat-form-field>
+    </fieldset>
+
+    <fieldset>
+      <legend>Figura de Transporte</legend>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Nombre</mat-label>
+        <input matInput placeholder="Placeholder" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>RFC</mat-label>
+        <input matInput placeholder="Placeholder" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Licencia</mat-label>
+        <input matInput placeholder="Placeholder" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Calle</mat-label>
+        <input matInput placeholder="Placeholder" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Número Exterior</mat-label>
+        <input matInput placeholder="Placeholder" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Número Interior</mat-label>
+        <input matInput placeholder="Placeholder" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Código Postal</mat-label>
+        <input matInput placeholder="Placeholder" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Colonia</mat-label>
+        <mat-select>
+          <mat-option
+            *ngFor="let neighborhood of neighborhoods"
+            [value]="neighborhood.Value"
+          >
+            {{ neighborhood.Name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Localidad</mat-label>
+        <mat-select>
+          <mat-option
+            *ngFor="let locality of localities"
+            [value]="locality.Value"
+          >
+            {{ locality.Name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Municipio</mat-label>
+        <mat-select>
+          <mat-option
+            *ngFor="let municipality of municipalities"
+            [value]="municipality.Value"
+          >
+            {{ municipality.Name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Estado</mat-label>
+        <mat-select>
+          <mat-option *ngFor="let state of states" [value]="state.Value">
+            {{ state.Name }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>País</mat-label>
+        <input matInput placeholder="Pais" />
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Referencia</mat-label>
+        <textarea matInput placeholder="Placeholder"></textarea>
+      </mat-form-field>
+    </fieldset>
+
+    <button type="submit" mat-raised-button color="primary">Generar</button>
+  </form>
+</div>

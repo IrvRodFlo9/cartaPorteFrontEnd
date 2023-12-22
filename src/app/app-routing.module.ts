@@ -1,10 +1,30 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 
-const routes: Routes = [];
+const routes: Routes = [
+  {
+    path: '',
+    redirectTo: 'cartaporte',
+    pathMatch: 'full',
+  },
+  {
+    path: 'login',
+    loadChildren: () => import('./auth/auth.module').then((m) => m.AuthModule),
+  },
+  {
+    path: 'cartaporte',
+    loadChildren: () =>
+      import('./cartaporte/cartaporte.module').then((m) => m.CartaporteModule),
+  },
+
+  {
+    path: '**',
+    redirectTo: 'cartaporte',
+  },
+];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}
