@@ -17,6 +17,10 @@ export class LayoutComponent implements OnInit, OnDestroy {
   public lastKey?: string;
   public title?: string;
 
+  get keyHistory(): string[] {
+    return this.localStorageService.keysHistory;
+  }
+
   constructor(
     private localStorageService: LocalStorageService,
     private readonly activatedRouter: ActivatedRoute,
@@ -42,8 +46,10 @@ export class LayoutComponent implements OnInit, OnDestroy {
     this.routerEvent.unsubscribe();
   }
 
-  public get keyHistory(): string[] {
-    return this.localStorageService.keysHistory;
+  public cleanHistory(): void {
+    this.localStorageService.cleanHistory();
+    this.localStorageService.loadLocalStorage();
+    this.router.navigateByUrl('list');
   }
 
   private setTitle(): void {

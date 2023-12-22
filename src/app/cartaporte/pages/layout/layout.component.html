@@ -13,6 +13,14 @@
         Completar Carta Porte {{ key }}
       </a>
     </nav>
+    <button
+      *ngIf="keyHistory.length > 0"
+      mat-raised-button
+      color="warn"
+      (click)="cleanHistory(); drawer.toggle()"
+    >
+      <mat-icon>delete</mat-icon>Limpiar Lista
+    </button>
   </mat-drawer>
   <mat-drawer-content>
     <mat-toolbar>

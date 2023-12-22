@@ -7,9 +7,20 @@ mat-drawer-container {
 
 mat-drawer {
   width: 65vw;
+  text-align: center;
 
   @include m.tablet {
     width: 22rem;
+  }
+
+  button {
+    margin-top: 2rem;
+
+    mat-icon {
+      width: auto;
+      height: auto;
+      font-size: 2rem;
+    }
   }
 }
 

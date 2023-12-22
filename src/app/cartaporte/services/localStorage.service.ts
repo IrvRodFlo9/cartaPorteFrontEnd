@@ -19,6 +19,10 @@ export class LocalStorageService {
     this.keysHistory = JSON.parse(localStorage.getItem('history')!);
   }
 
+  public cleanHistory(): void {
+    localStorage.setItem('history', JSON.stringify([]));
+  }
+
   private saveHistoryInLocalStorage(): void {
     localStorage.setItem('history', JSON.stringify(this.keysHistory));
   }
