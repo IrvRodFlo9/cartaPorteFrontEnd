@@ -23,6 +23,14 @@ export class LocalStorageService {
     localStorage.setItem('history', JSON.stringify([]));
   }
 
+  public deleteKeyFromHistory(key: string): void {
+    if (this.keysHistory.includes(key)) {
+      this.keysHistory = this.keysHistory.filter((oldKey) => oldKey !== key);
+    }
+    this.keysHistory = this.keysHistory.splice(0, 5);
+    this.saveHistoryInLocalStorage();
+  }
+
   private saveHistoryInLocalStorage(): void {
     localStorage.setItem('history', JSON.stringify(this.keysHistory));
   }

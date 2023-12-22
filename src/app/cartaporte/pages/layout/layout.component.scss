@@ -13,6 +13,11 @@ mat-drawer {
     width: 22rem;
   }
 
+  .linkSelected {
+    background-color: rgb(211, 211, 211);
+    color: #0c2693;
+  }
+
   button {
     margin-top: 2rem;
 
@@ -27,17 +32,17 @@ mat-drawer {
 nav {
   display: flex;
   flex-direction: column;
-  gap: 5px;
   font-size: 1.5rem;
 
   a {
-    padding: 1.7rem;
+    padding: 1.9rem;
 
     @include m.desktop {
       font-size: 1.7rem;
       transition: all 400ms;
 
       &:hover {
+        color: white;
         background-color: gray;
         transform: scale(1.01);
       }

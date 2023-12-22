@@ -147,6 +147,8 @@ export class CompleteComponent implements OnInit, OnDestroy {
     console.log(JSON.stringify(autotransportJSON));
     console.log(JSON.stringify(transportFigureJSON));
 
+    this.localStorageService.deleteKeyFromHistory(this.key);
+
     this.router.navigateByUrl('list');
   }
 

@@ -4,10 +4,18 @@
       <mat-icon>arrow_forward</mat-icon>
     </mat-toolbar>
     <nav>
-      <a routerLink="list" (click)="drawer.toggle()">Historial</a>
+      <a
+        class="historyListLink"
+        routerLink="list"
+        routerLinkActive="linkSelected"
+        (click)="drawer.toggle()"
+      >
+        Historial
+      </a>
       <a
         *ngFor="let key of keyHistory"
         [routerLink]="'complete/' + key"
+        routerLinkActive="linkSelected"
         (click)="drawer.toggle()"
       >
         Completar Carta Porte {{ key }}
