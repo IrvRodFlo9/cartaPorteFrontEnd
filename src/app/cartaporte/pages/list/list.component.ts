@@ -6,48 +6,48 @@ const ELEMENT_DATA = [
     date: '20/12/2023',
     key: '#TUL-1023-201223',
     status: 'Por Generar',
-    pdfLink: 'H',
-    xmlLink: 'H',
+    pdfLink: 'documentoPDF.pdf',
+    xmlLink: 'documentoXML.xml',
     completeLink: 'Ver',
   },
   {
     date: '20/12/2023',
     key: '#PRM-1023-201223',
     status: 'Por Generar',
-    pdfLink: 'H',
-    xmlLink: 'H',
+    pdfLink: 'documentoPDF.pdf',
+    xmlLink: 'documentoXML.xml',
     completeLink: 'Ver',
   },
   {
     date: '20/12/2023',
     key: '#PCH-1023-201223',
     status: 'Por Generar',
-    pdfLink: 'H',
-    xmlLink: 'H',
+    pdfLink: 'documentoPDF.pdf',
+    xmlLink: 'documentoXML.xml',
     completeLink: 'Ver',
   },
   {
     date: '20/12/2023',
     key: '#UNI-1023-201223',
     status: 'Generada',
-    pdfLink: 'H',
-    xmlLink: 'H',
+    pdfLink: 'documentoPDF.pdf',
+    xmlLink: 'documentoXML.xml',
     completeLink: 'Ver',
   },
   {
     date: '20/12/2023',
     key: '#CTR-1023-201223',
     status: 'Generada',
-    pdfLink: 'He',
-    xmlLink: 'H',
+    pdfLink: 'documentoPDF.pdfe',
+    xmlLink: 'documentoXML.xml',
     completeLink: 'Ver',
   },
   {
     date: '20/12/2023',
     key: '#SLP-1023-201223',
     status: 'Generada',
-    pdfLink: 'H',
-    xmlLink: 'H',
+    pdfLink: 'documentoPDF.pdf',
+    xmlLink: 'documentoXML.xml',
     completeLink: 'Ver',
   },
 ];
@@ -66,4 +66,10 @@ export class ListComponent {
     'actions',
   ];
   public dataSource = ELEMENT_DATA;
+
+  constructor(private cartaPorteService: CartaPorteService) {}
+
+  descargarArchivo(filename: string): void {
+    this.cartaPorteService.downloadFile(filename);
+  }
 }
