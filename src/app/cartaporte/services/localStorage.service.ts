@@ -2,21 +2,28 @@ import { Injectable } from '@angular/core';
 
 @Injectable({ providedIn: 'root' })
 export class LocalStorageService {
+  private maxHistoryShow: number = 5;
+
   public keysHistory: string[] = [];
+
   constructor() {}
 
   public organizeHistory(key: string): void {
-    if (this.keysHistory.includes(key)) {
-      this.keysHistory = this.keysHistory.filter((oldKey) => oldKey !== key);
-    }
+    this.removeKeyFromHistory(key);
     this.keysHistory.unshift(key);
-    this.keysHistory = this.keysHistory.splice(0, 5);
+    this.keysHistory = this.keysHistory.splice(0, this.maxHistoryShow);
     this.saveHistoryInLocalStorage();
   }
 
   public loadLocalStorage(): void {
-    if (!localStorage.getItem('history')) return;
-    this.keysHistory = JSON.parse(localStorage.getItem('history')!);
+    try {
+      const storedHistory: string | null = localStorage.getItem('history');
+      if (storedHistory) {
+        this.keysHistory = JSON.parse(storedHistory);
+      }
+    } catch {
+      console.error('Error loading from localStorage');
+    }
   }
 
   public cleanHistory(): void {
@@ -24,11 +31,15 @@ export class LocalStorageService {
   }
 
   public deleteKeyFromHistory(key: string): void {
+    this.removeKeyFromHistory(key);
+    this.keysHistory = this.keysHistory.splice(0, this.maxHistoryShow);
+    this.saveHistoryInLocalStorage();
+  }
+
+  private removeKeyFromHistory(key: string) {
     if (this.keysHistory.includes(key)) {
       this.keysHistory = this.keysHistory.filter((oldKey) => oldKey !== key);
     }
-    this.keysHistory = this.keysHistory.splice(0, 5);
-    this.saveHistoryInLocalStorage();
   }
 
   private saveHistoryInLocalStorage(): void {
