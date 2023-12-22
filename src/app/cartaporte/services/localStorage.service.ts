@@ -28,6 +28,7 @@ export class LocalStorageService {
 
   public cleanHistory(): void {
     localStorage.setItem('history', JSON.stringify([]));
+    this.loadLocalStorage();
   }
 
   public deleteKeyFromHistory(key: string): void {

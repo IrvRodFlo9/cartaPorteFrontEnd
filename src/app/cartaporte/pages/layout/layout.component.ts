@@ -1,17 +1,23 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import {
+  AfterViewInit,
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  OnDestroy,
+} from '@angular/core';
 
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { Subscription, distinctUntilChanged, filter, map } from 'rxjs';
 
-import { CartaPorteService } from '../../services/cartaporte.service';
 import { LocalStorageService } from '../../services/localStorage.service';
 
 @Component({
   selector: 'app-layout',
   templateUrl: './layout.component.html',
   styleUrls: ['./layout.component.scss'],
+  changeDetection: ChangeDetectionStrategy.OnPush,
 })
-export class LayoutComponent implements OnInit, OnDestroy {
+export class LayoutComponent implements AfterViewInit, OnDestroy {
   private routerEvent: Subscription = new Subscription();
 
   public lastKey?: string;
@@ -27,19 +33,9 @@ export class LayoutComponent implements OnInit, OnDestroy {
     private readonly router: Router
   ) {}
 
-  ngOnInit(): void {
-    this.setTitle();
-
-    this.routerEvent = this.router.events
-      .pipe(
-        filter(
-          (event): event is NavigationEnd => event instanceof NavigationEnd
-        ),
-        distinctUntilChanged()
-      )
-      .subscribe(() => this.setTitle());
-
-    this.localStorageService.loadLocalStorage();
+  ngAfterViewInit(): void {
+    this.setRouterEvents();
+    this.loadData();
   }
 
   ngOnDestroy(): void {
@@ -48,8 +44,22 @@ export class LayoutComponent implements OnInit, OnDestroy {
 
   public cleanHistory(): void {
     this.localStorageService.cleanHistory();
-    this.localStorageService.loadLocalStorage();
     this.router.navigateByUrl('list');
+  }
+
+  private setRouterEvents(): void {
+    this.routerEvent = this.router.events
+      .pipe(
+        filter(
+          (event): event is NavigationEnd => event instanceof NavigationEnd
+        ),
+        distinctUntilChanged()
+      )
+      .subscribe(() => this.setTitle());
+  }
+
+  private loadData(): void {
+    this.localStorageService.loadLocalStorage();
   }
 
   private setTitle(): void {

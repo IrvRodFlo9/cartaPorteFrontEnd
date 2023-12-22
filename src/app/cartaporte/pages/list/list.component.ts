@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CartaPorteService } from '../../services/cartaporte.service';
+import { DownloadService } from '../../services/download.service';
 
 const ELEMENT_DATA = [
   {
@@ -67,9 +68,9 @@ export class ListComponent {
   ];
   public dataSource = ELEMENT_DATA;
 
-  constructor(private cartaPorteService: CartaPorteService) {}
+  constructor(private downloadService: DownloadService) {}
 
   public descargarArchivo(filename: string): void {
-    this.cartaPorteService.downloadFile(filename);
+    this.downloadService.downloadFile(filename);
   }
 }

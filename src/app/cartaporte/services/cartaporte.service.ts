@@ -19,22 +19,6 @@ export class CartaPorteService {
 
   constructor(private http: HttpClient) {}
 
-  public downloadFile(filename: string): void {
-    const fileUrl = `assets/${filename}`;
-
-    this.http.get(fileUrl, { responseType: 'blob' }).subscribe((data: Blob) => {
-      const blob = new Blob([data], { type: 'application/octet-stream' });
-
-      const a = document.createElement('a');
-      a.href = window.URL.createObjectURL(blob);
-      a.download = filename;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      window.URL.revokeObjectURL(a.href);
-    });
-  }
-
   public getUbicationByPostalCode(postalCode: string): Observable<Ubication> {
     const headers = this.authHeader;
     const url: string = `${environment.facturama.baseURL}/Catalogs/PostalCodes?keyword=${postalCode}`;
