@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { CartaPorteService } from '../../services/cartaporte.service';
 import {
   Locality,
@@ -58,7 +58,8 @@ export class CompleteComponent implements OnInit {
   constructor(
     private cartaPorteService: CartaPorteService,
     private fb: FormBuilder,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -136,6 +137,8 @@ export class CompleteComponent implements OnInit {
 
     console.log(JSON.stringify(autotransportJSON));
     console.log(JSON.stringify(transportFigureJSON));
+
+    this.router.navigateByUrl('list');
   }
 
   private getAndSetUbication(

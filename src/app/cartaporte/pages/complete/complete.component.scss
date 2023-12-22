@@ -29,12 +29,12 @@ fieldset {
     grid-template-columns: repeat(2, 1fr);
   }
 
-  @include m.desktop {
-    grid-template-columns: repeat(3, 1fr);
-  }
-
   legend {
     font-size: 1.7rem;
     padding: 0 0.8rem;
+  }
+
+  .span-2 {
+    grid-column: span 2;
   }
 }
