@@ -1,12 +1,13 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { environment } from 'src/environments/envitonment';
 
 @Injectable({ providedIn: 'root' })
 export class DownloadService {
   constructor(private http: HttpClient) {}
 
   public downloadFile(filename: string): void {
-    const fileUrl = `assets/${filename}`;
+    const fileUrl = `${environment.download.baseURL}/${filename}`;
 
     this.http.get(fileUrl, { responseType: 'blob' }).subscribe((data: Blob) => {
       const blob = new Blob([data], { type: 'application/octet-stream' });

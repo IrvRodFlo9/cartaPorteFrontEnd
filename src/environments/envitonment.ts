@@ -3,4 +3,7 @@ export const environment = {
     baseURL: 'https://apisandbox.facturama.mx',
     auth: 'bWlrZWdhc2NhOjEwMjAzMA==',
   },
+  download: {
+    baseURL: 'assets',
+  },
 };

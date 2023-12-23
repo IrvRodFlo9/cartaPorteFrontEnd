@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 @Injectable({ providedIn: 'root' })
 export class LocalStorageService {
   private maxHistoryShow: number = 5;
+  private localStorageKey: string = 'history';
 
   public keysHistory: string[] = [];
 
@@ -17,18 +18,18 @@ export class LocalStorageService {
 
   public loadLocalStorage(): void {
     try {
-      const storedHistory: string | null = localStorage.getItem('history');
-      if (storedHistory) {
-        this.keysHistory = JSON.parse(storedHistory);
-      }
+      const storedHistory: string | null = localStorage.getItem(
+        this.localStorageKey
+      );
+      storedHistory && (this.keysHistory = JSON.parse(storedHistory));
     } catch {
       console.error('Error loading from localStorage');
     }
   }
 
   public cleanHistory(): void {
-    localStorage.setItem('history', JSON.stringify([]));
-    this.loadLocalStorage();
+    this.keysHistory = [];
+    this.saveHistoryInLocalStorage();
   }
 
   public deleteKeyFromHistory(key: string): void {
@@ -44,6 +45,9 @@ export class LocalStorageService {
   }
 
   private saveHistoryInLocalStorage(): void {
-    localStorage.setItem('history', JSON.stringify(this.keysHistory));
+    localStorage.setItem(
+      this.localStorageKey,
+      JSON.stringify(this.keysHistory)
+    );
   }
 }
