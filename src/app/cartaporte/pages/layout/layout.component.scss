@@ -14,8 +14,8 @@ mat-drawer {
   }
 
   .linkSelected {
-    background-color: rgb(211, 211, 211);
-    color: #0c2693;
+    background-color: v.$grayLight;
+    color: v.$secondary;
   }
 
   button {
@@ -42,8 +42,8 @@ nav {
       transition: all 400ms;
 
       &:hover {
-        color: white;
-        background-color: gray;
+        color: v.$white;
+        background-color: v.$gray;
         transform: scale(1.01);
       }
     }
@@ -56,6 +56,6 @@ nav {
 }
 
 mat-toolbar {
-  background-color: #001551;
-  color: white;
+  background-color: v.$primary;
+  color: v.$white;
 }

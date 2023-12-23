@@ -1,6 +1,8 @@
+@use "variables" as v;
+
 .th {
-  background-color: #001551;
-  color: white;
+  background-color: v.$primary;
+  color: v.$white;
   font-size: 17px;
 }
 

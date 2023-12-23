@@ -1,3 +1,4 @@
+@use "variables" as v;
 @use "mixins" as m;
 
 .complete-container {
@@ -19,7 +20,7 @@ form {
 }
 
 fieldset {
-  border-color: #001551;
+  border-color: v.$primary;
   border-radius: 1rem;
   display: grid;
   gap: 1.5rem;

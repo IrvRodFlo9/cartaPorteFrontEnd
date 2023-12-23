@@ -15,7 +15,7 @@
       <td
         mat-cell
         *matCellDef="let cartaporte"
-        [style.color]="cartaporte.status | generatedColor"
+        [ngStyle]="{ color: cartaporte.status | generatedColor }"
         class="bold status"
       >
         {{ cartaporte.status }}
