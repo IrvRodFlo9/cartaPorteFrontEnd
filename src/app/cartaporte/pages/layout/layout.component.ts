@@ -1,12 +1,11 @@
 import {
   AfterViewInit,
   ChangeDetectionStrategy,
-  ChangeDetectorRef,
   Component,
   OnDestroy,
 } from '@angular/core';
-
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
+
 import { Subscription, distinctUntilChanged, filter, map } from 'rxjs';
 
 import { LocalStorageService } from '../../services/localStorage.service';

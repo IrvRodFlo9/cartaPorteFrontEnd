@@ -1,5 +1,5 @@
-import { Component, OnInit } from '@angular/core';
-import { CartaPorteService } from '../../services/cartaporte.service';
+import { Component } from '@angular/core';
+
 import { DownloadService } from '../../services/download.service';
 
 const ELEMENT_DATA = [

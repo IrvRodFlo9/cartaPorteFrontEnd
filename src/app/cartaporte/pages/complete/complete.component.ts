@@ -1,13 +1,5 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { CartaPorteService } from '../../services/cartaporte.service';
-import {
-  Locality,
-  Municipality,
-  Neighborhood,
-  State,
-} from '../../interfaces/catalog-interface';
-
 import {
   FormBuilder,
   FormControl,
@@ -15,9 +7,18 @@ import {
   Validators,
 } from '@angular/forms';
 import { Subscription, tap } from 'rxjs';
+
+import { CartaPorteService } from '../../services/cartaporte.service';
+import { LocalStorageService } from '../../services/localStorage.service';
+
+import {
+  Locality,
+  Municipality,
+  Neighborhood,
+  State,
+} from '../../interfaces/catalog-interface';
 import { Autotransport } from '../../interfaces/autotransport-interface';
 import { TransportFigure } from '../../interfaces/transport-figure-interface';
-import { LocalStorageService } from '../../services/localStorage.service';
 
 @Component({
   selector: 'app-complete',
