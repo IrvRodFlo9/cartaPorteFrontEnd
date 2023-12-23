@@ -34,6 +34,7 @@ export class LayoutComponent implements AfterViewInit, OnDestroy {
   ) {}
 
   ngAfterViewInit(): void {
+    this.setTitle();
     this.setRouterEvents();
     this.loadData();
   }
