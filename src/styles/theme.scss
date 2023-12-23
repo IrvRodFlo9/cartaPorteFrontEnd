@@ -1,0 +1,47 @@
+@use "@angular/material" as mat;
+@use "variables" as v;
+
+@include mat.core();
+@include mat.strong-focus-indicators();
+
+$main-palette: (
+  50: v.$m50,
+  100: v.$m100,
+  200: v.$m200,
+  300: v.$m300,
+  400: v.$m400,
+  500: v.$secondary,
+  600: v.$m600,
+  700: v.$primary,
+  800: v.$m800,
+  900: v.$m900,
+  contrast: (
+    50: rgba(v.$black, 0.87),
+    100: rgba(v.$black, 0.87),
+    200: rgba(v.$black, 0.87),
+    300: rgba(v.$black, 0.87),
+    400: rgba(v.$white, 0.7),
+    500: rgba(v.$white, 0.6),
+    600: rgba(v.$white, 0.5),
+    700: rgba(v.$white, 0.4),
+    800: rgba(v.$white, 0.3),
+    900: rgba(v.$white, 0.25),
+  ),
+);
+
+$my-primary: mat.define-palette($main-palette, 700);
+$my-secondary: mat.define-palette($main-palette, 500);
+$my-accent: mat.define-palette(mat.$red-palette, A200, A100, A400);
+$my-indigo: mat.define-palette(mat.$indigo-palette, 500);
+
+$my-theme: mat.define-light-theme(
+  (
+    color: (
+      primary: $my-primary,
+      accent: $my-secondary,
+    ),
+  )
+);
+
+@include mat.all-component-themes($my-theme);
+@include mat.strong-focus-indicators-theme($my-theme);
