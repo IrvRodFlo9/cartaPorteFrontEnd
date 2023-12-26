@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
   FormBuilder,
@@ -26,10 +26,16 @@ import { TransportFigure } from '../../interfaces/transport-figure-interface';
   styleUrls: ['./complete.component.scss'],
 })
 export class CompleteComponent implements OnInit, OnDestroy {
+  private cartaPorteService: CartaPorteService = inject(CartaPorteService);
+  private fb: FormBuilder = inject(FormBuilder);
+  private localStorageService: LocalStorageService =
+    inject(LocalStorageService);
+  private route: ActivatedRoute = inject(ActivatedRoute);
+  private router: Router = inject(Router);
+
   private routeSubscription!: Subscription;
 
   public key: string = '';
-
   public states: State[] = [];
   public municipalities: Municipality[] = [];
   public neighborhoods: Neighborhood[] = [];
@@ -58,14 +64,6 @@ export class CompleteComponent implements OnInit, OnDestroy {
     country: ['MEX', [Validators.required]],
     reference: [''],
   });
-
-  constructor(
-    private cartaPorteService: CartaPorteService,
-    private fb: FormBuilder,
-    private route: ActivatedRoute,
-    private router: Router,
-    private localStorageService: LocalStorageService
-  ) {}
 
   ngOnInit() {
     this.routeSubscription = this.route.params.subscribe((params) => {

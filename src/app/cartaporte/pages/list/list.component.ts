@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 
 import { DownloadService } from '../../services/download.service';
 
@@ -59,6 +59,8 @@ const ELEMENT_DATA = [
   styleUrls: ['./list.component.scss'],
 })
 export class ListComponent {
+  private downloadService: DownloadService = inject(DownloadService);
+
   public displayedColumns: string[] = [
     'date',
     'key',
@@ -68,9 +70,7 @@ export class ListComponent {
   ];
   public dataSource = ELEMENT_DATA;
 
-  constructor(private downloadService: DownloadService) {}
-
-  public descargarArchivo(filename: string): void {
+  public downloadFile(filename: string): void {
     this.downloadService.downloadFile(filename);
   }
 }

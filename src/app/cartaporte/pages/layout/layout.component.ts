@@ -2,6 +2,7 @@ import {
   AfterViewInit,
   ChangeDetectionStrategy,
   Component,
+  inject,
   OnDestroy,
 } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
@@ -17,6 +18,11 @@ import { LocalStorageService } from '../../services/localStorage.service';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LayoutComponent implements AfterViewInit, OnDestroy {
+  private activatedRouter: ActivatedRoute = inject(ActivatedRoute);
+  private localStorageService: LocalStorageService =
+    inject(LocalStorageService);
+  private router: Router = inject(Router);
+
   private routerEvent: Subscription = new Subscription();
 
   public lastKey?: string;
@@ -25,12 +31,6 @@ export class LayoutComponent implements AfterViewInit, OnDestroy {
   get keyHistory(): string[] {
     return this.localStorageService.keysHistory;
   }
-
-  constructor(
-    private localStorageService: LocalStorageService,
-    private readonly activatedRouter: ActivatedRoute,
-    private readonly router: Router
-  ) {}
 
   ngAfterViewInit(): void {
     this.setTitle();

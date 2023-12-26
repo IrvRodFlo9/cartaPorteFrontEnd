@@ -2,12 +2,10 @@ import { Injectable } from '@angular/core';
 
 @Injectable({ providedIn: 'root' })
 export class LocalStorageService {
-  private maxHistoryShow: number = 5;
-  private localStorageKey: string = 'history';
+  private readonly maxHistoryShow: number = 5;
+  private readonly localStorageKey: string = 'history';
 
   public keysHistory: string[] = [];
-
-  constructor() {}
 
   public organizeHistory(key: string): void {
     this.removeKeyFromHistory(key);

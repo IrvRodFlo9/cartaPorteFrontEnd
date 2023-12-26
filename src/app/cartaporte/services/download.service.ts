@@ -1,11 +1,11 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 
 import { environment } from 'src/environments/envitonment';
 
 @Injectable({ providedIn: 'root' })
 export class DownloadService {
-  constructor(private http: HttpClient) {}
+  private http: HttpClient = inject(HttpClient);
 
   public downloadFile(filename: string): void {
     const fileUrl = `${environment.download.baseURL}/${filename}`;

@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, catchError, map, of } from 'rxjs';
 
@@ -13,12 +13,12 @@ import {
 
 @Injectable({ providedIn: 'root' })
 export class CartaPorteService {
+  private http: HttpClient = inject(HttpClient);
+
   private authHeader: HttpHeaders = new HttpHeaders({
     Authorization: `Basic ${environment.facturama.auth}`,
   });
   private urlCatalogs: string = `${environment.facturama.baseURL}/catalogs`;
-
-  constructor(private http: HttpClient) {}
 
   public getUbicationByPostalCode(postalCode: string): Observable<Ubication> {
     const headers = this.authHeader;
