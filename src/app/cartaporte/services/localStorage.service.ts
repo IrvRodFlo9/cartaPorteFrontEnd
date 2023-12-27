@@ -8,6 +8,7 @@ export class LocalStorageService {
   public keysHistory: string[] = [];
 
   public organizeHistory(key: string): void {
+    this.loadLocalStorage();
     this.removeKeyFromHistory(key);
     this.keysHistory.unshift(key);
     this.keysHistory = this.keysHistory.splice(0, this.maxHistoryShow);
@@ -32,7 +33,6 @@ export class LocalStorageService {
 
   public deleteKeyFromHistory(key: string): void {
     this.removeKeyFromHistory(key);
-    this.keysHistory = this.keysHistory.splice(0, this.maxHistoryShow);
     this.saveHistoryInLocalStorage();
   }
 
