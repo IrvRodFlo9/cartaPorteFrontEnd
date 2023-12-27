@@ -42,3 +42,13 @@ button {
     height: auto;
   }
 }
+
+.loading-spinner {
+  width: 100%;
+  display: flex;
+  padding-top: 5rem;
+  gap: 3rem;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}

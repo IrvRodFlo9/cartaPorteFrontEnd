@@ -1,6 +1,7 @@
-import { Component, inject } from '@angular/core';
+import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
 
 import { DownloadService } from '../../services/download.service';
+import { interval } from 'rxjs';
 
 const ELEMENT_DATA = [
   {
@@ -58,8 +59,9 @@ const ELEMENT_DATA = [
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.scss'],
 })
-export class ListComponent {
+export class ListComponent implements OnInit {
   private downloadService: DownloadService = inject(DownloadService);
+  private cdr: ChangeDetectorRef = inject(ChangeDetectorRef);
 
   public displayedColumns: string[] = [
     'date',
@@ -69,6 +71,18 @@ export class ListComponent {
     'actions',
   ];
   public dataSource = ELEMENT_DATA;
+  public isLoading: boolean = true;
+
+  ngOnInit(): void {
+    this.getList();
+  }
+
+  public getList(): void {
+    interval(1500).subscribe(() => {
+      this.isLoading = false;
+      this.cdr.detectChanges();
+    });
+  }
 
   public downloadFile(filename: string): void {
     this.downloadService.downloadFile(filename);
