@@ -13,13 +13,13 @@ export class DownloadService {
     this.http.get(fileUrl, { responseType: 'blob' }).subscribe((data: Blob) => {
       const blob = new Blob([data], { type: 'application/octet-stream' });
 
-      const a = document.createElement('a');
-      a.href = window.URL.createObjectURL(blob);
-      a.download = filename;
-      document.body.appendChild(a);
-      a.click();
-      document.body.removeChild(a);
-      window.URL.revokeObjectURL(a.href);
+      const downloadInstance = document.createElement('a');
+      downloadInstance.href = window.URL.createObjectURL(blob);
+      downloadInstance.download = filename;
+      document.body.appendChild(downloadInstance);
+      downloadInstance.click();
+      document.body.removeChild(downloadInstance);
+      window.URL.revokeObjectURL(downloadInstance.href);
     });
   }
 }

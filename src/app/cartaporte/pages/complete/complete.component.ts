@@ -1,3 +1,4 @@
+import { GetErrorsPipe } from './../../../shared/pipes/control-errors.pipe';
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
@@ -34,6 +35,7 @@ export class CompleteComponent implements OnInit, OnDestroy {
   private router: Router = inject(Router);
 
   private routeSubscription!: Subscription;
+  private errorsPipe: GetErrorsPipe = new GetErrorsPipe();
 
   public key: string = '';
   public states: State[] = [];
@@ -56,7 +58,10 @@ export class CompleteComponent implements OnInit, OnDestroy {
     street: ['1', [Validators.required]],
     extNumber: ['', [Validators.required]],
     intNumber: [''],
-    postalCode: ['43650', [Validators.required]],
+    postalCode: [
+      '43650',
+      [Validators.required, Validators.pattern('^[0-9]{5}$')],
+    ],
     neighborhood: ['', [Validators.required]],
     locality: ['', [Validators.required]],
     municipality: ['', [Validators.required]],
@@ -81,6 +86,19 @@ export class CompleteComponent implements OnInit, OnDestroy {
 
   ngOnDestroy(): void {
     this.routeSubscription.unsubscribe();
+  }
+
+  public getControlErrors(
+    controlName: string,
+    controlLabel: string = 'Campo'
+  ): string[] {
+    if (!this.form.get(controlName)) return [];
+
+    const errors = this.errorsPipe.transform(
+      this.form.get(controlName),
+      controlLabel
+    );
+    return errors;
   }
 
   public getInformationByPostalCode(): void {

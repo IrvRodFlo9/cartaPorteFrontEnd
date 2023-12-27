@@ -10,7 +10,12 @@
       <mat-form-field appearance="outline">
         <mat-label>Permiso</mat-label>
         <input matInput formControlName="permission" placeholder="Permiso" />
-        <mat-hint></mat-hint>
+
+        <mat-error
+          *ngFor="let errorMessage of getControlErrors('permission', 'Permiso')"
+        >
+          {{ errorMessage }}
+        </mat-error>
       </mat-form-field>
 
       <mat-form-field appearance="outline">
@@ -20,6 +25,16 @@
           formControlName="numberPermission"
           placeholder="Número de Permiso"
         />
+        <mat-error
+          *ngFor="
+            let errorMessage of getControlErrors(
+              'numberPermission',
+              'Número de permiso'
+            )
+          "
+        >
+          {{ errorMessage }}
+        </mat-error>
       </mat-form-field>
 
       <mat-form-field appearance="outline">
@@ -29,11 +44,26 @@
           formControlName="vehicularConfig"
           placeholder="Configutación Vehicular"
         />
+        <mat-error
+          *ngFor="
+            let errorMessage of getControlErrors(
+              'vehicularConfig',
+              'Configuración vehícular'
+            )
+          "
+        >
+          {{ errorMessage }}
+        </mat-error>
       </mat-form-field>
 
       <mat-form-field appearance="outline">
         <mat-label>Peso Bruto (ton)</mat-label>
         <input matInput formControlName="weight" placeholder="Peso Bruto" />
+        <mat-error
+          *ngFor="let errorMessage of getControlErrors('weight', 'Peso')"
+        >
+          {{ errorMessage }}
+        </mat-error>
       </mat-form-field>
 
       <mat-form-field appearance="outline">
@@ -43,11 +73,21 @@
           formControlName="plate"
           placeholder="Placa del Vehiculo"
         />
+        <mat-error
+          *ngFor="let errorMessage of getControlErrors('plate', 'Placa')"
+        >
+          {{ errorMessage }}
+        </mat-error>
       </mat-form-field>
 
       <mat-form-field appearance="outline">
         <mat-label>Modelo (año)</mat-label>
-        <input matInput formControlName="model" placeholder="Año del Modelo" />
+        <input matInput formControlName="model" placeholder="Ej. 2020" />
+        <mat-error
+          *ngFor="let errorMessage of getControlErrors('model', 'Modelo')"
+        >
+          {{ errorMessage }}
+        </mat-error>
       </mat-form-field>
 
       <mat-form-field appearance="outline">
@@ -57,6 +97,13 @@
           formControlName="insurance"
           placeholder="Nombre Aseguradora"
         />
+        <mat-error
+          *ngFor="
+            let errorMessage of getControlErrors('insurance', 'Aseguradora')
+          "
+        >
+          {{ errorMessage }}
+        </mat-error>
       </mat-form-field>
 
       <mat-form-field appearance="outline">
@@ -66,6 +113,13 @@
           formControlName="insurancePolicy"
           placeholder="Poliza de Seguro"
         />
+        <mat-error
+          *ngFor="
+            let errorMessage of getControlErrors('insurancePolicy', 'Poliza')
+          "
+        >
+          {{ errorMessage }}
+        </mat-error>
       </mat-form-field>
     </fieldset>
 
@@ -75,16 +129,29 @@
       <mat-form-field appearance="outline" class="span-2">
         <mat-label>Nombre</mat-label>
         <input matInput formControlName="name" placeholder="Nombre Completo" />
+        <mat-error
+          *ngFor="let errorMessage of getControlErrors('name', 'Nombre')"
+        >
+          {{ errorMessage }}
+        </mat-error>
       </mat-form-field>
 
       <mat-form-field appearance="outline">
         <mat-label>RFC</mat-label>
         <input matInput formControlName="rfc" placeholder="RCF" />
+        <mat-error *ngFor="let errorMessage of getControlErrors('rfc', 'RFC')">
+          {{ errorMessage }}
+        </mat-error>
       </mat-form-field>
 
       <mat-form-field appearance="outline">
         <mat-label>Licencia</mat-label>
         <input matInput formControlName="licence" placeholder="Licencia" />
+        <mat-error
+          *ngFor="let errorMessage of getControlErrors('licence', 'Licencia')"
+        >
+          {{ errorMessage }}
+        </mat-error>
       </mat-form-field>
 
       <mat-form-field appearance="outline">
@@ -95,6 +162,13 @@
           formControlName="postalCode"
           placeholder="Ej. 42184"
         />
+        <mat-error
+          *ngFor="
+            let errorMessage of getControlErrors('postalCode', 'Código postal')
+          "
+        >
+          {{ errorMessage }}
+        </mat-error>
       </mat-form-field>
 
       <mat-form-field appearance="outline">
@@ -107,6 +181,11 @@
             {{ state.Name }}
           </mat-option>
         </mat-select>
+        <mat-error
+          *ngFor="let errorMessage of getControlErrors('state', 'Estado')"
+        >
+          {{ errorMessage }}
+        </mat-error>
       </mat-form-field>
     </fieldset>
 
