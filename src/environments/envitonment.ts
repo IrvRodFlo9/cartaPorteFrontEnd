@@ -4,6 +4,6 @@ export const environment = {
     auth: 'bWlrZWdhc2NhOjEwMjAzMA==',
   },
   download: {
-    baseURL: 'assets',
+    baseURL: '/assets',
   },
 };

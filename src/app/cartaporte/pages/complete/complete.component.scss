@@ -36,6 +36,8 @@ fieldset {
   }
 
   .span-2 {
-    grid-column: span 2;
+    @include m.tablet {
+      grid-column: span 2;
+    }
   }
 }

@@ -8,7 +8,16 @@
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "build:href": "ng build --base-href ./"
+    "build:href": "ng build --base-href ./",
+    "install:devs": "npm i -D rimraf copyfiles",
+    "make:docs": "mkdir docs",
+    "make:assets": "mkdir docs\\assets",
+    "make": "npm run make:docs && npm run make:assets",
+    "delete:docs": "rimraf docs",
+    "copy:dist:archives": "copyfiles dist/carta-porte-front-end/* ./docs -f",
+    "copy:dist:assets": "copyfiles dist/carta-porte-front-end/assets/* ./docs/assets -f",
+    "copy:dist": "npm run copy:dist:archives && npm run copy:dist:assets",
+    "build:all": "npm run delete:docs && npm run build:href && npm run make && npm run copy:dist"
   },
   "private": true,
   "dependencies": {
@@ -31,12 +40,14 @@
     "@angular/cli": "^16.2.10",
     "@angular/compiler-cli": "^16.2.0",
     "@types/jasmine": "~4.3.0",
+    "copyfiles": "^2.4.1",
     "jasmine-core": "~4.6.0",
     "karma": "~6.4.0",
     "karma-chrome-launcher": "~3.2.0",
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
+    "rimraf": "^5.0.5",
     "typescript": "~5.1.3"
   }
 }

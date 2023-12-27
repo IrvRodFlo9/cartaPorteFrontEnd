@@ -35,6 +35,10 @@ body {
   max-width: 100%;
 
   @include m.tablet {
+    max-width: 85%;
+  }
+
+  @include m.desktop {
     max-width: 70%;
   }
 }

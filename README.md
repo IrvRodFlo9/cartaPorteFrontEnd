@@ -4,7 +4,7 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ## Development server
 
-Run `npm start` for a dev server and open in the browser.
+Run `npm start` for a dev server and open in the browser. Also `npm run serve` for a dev server.
 
 ## Code scaffolding
 
@@ -12,7 +12,11 @@ Run `ng generate component component-name` to generate a new component. You can 
 
 ## Build
 
-Run `npm build:href` to build the project. The build artifacts will be stored in the `dist/` directory and change in the index the root from `/` to `./`.
+Run `npm run all` to build the project in the directory `docs`. Before run `npm run install:devs` for install the dependencies necesary to make the build of the project.
+
+### Classic Build
+
+Run `npm run build:href` to build the project. The build artifacts will be stored in the `dist/` directory and change in the index the root from `/` to `./`.
 
 ## Running unit tests
 
