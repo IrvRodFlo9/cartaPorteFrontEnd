@@ -1,4 +1,3 @@
-import { GetErrorsPipe } from './../../../shared/pipes/control-errors.pipe';
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import {
@@ -11,6 +10,8 @@ import { Subscription, tap } from 'rxjs';
 
 import { CartaPorteService } from '../../services/cartaporte.service';
 import { LocalStorageService } from '../../services/localStorage.service';
+
+import { ControlErrorsPipe } from './../../../shared/pipes/control-errors.pipe';
 
 import {
   Locality,
@@ -35,7 +36,7 @@ export class CompleteComponent implements OnInit, OnDestroy {
   private router: Router = inject(Router);
 
   private routeSubscription!: Subscription;
-  private errorsPipe: GetErrorsPipe = new GetErrorsPipe();
+  private controlErrors: ControlErrorsPipe = new ControlErrorsPipe();
 
   public key: string = '';
   public states: State[] = [];
@@ -94,7 +95,7 @@ export class CompleteComponent implements OnInit, OnDestroy {
   ): string[] {
     if (!this.form.get(controlName)) return [];
 
-    const errors = this.errorsPipe.transform(
+    const errors = this.controlErrors.transform(
       this.form.get(controlName),
       controlLabel
     );
