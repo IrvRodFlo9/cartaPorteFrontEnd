@@ -1,4 +1,10 @@
-import { Component, OnInit, inject, ChangeDetectorRef } from '@angular/core';
+import {
+  ChangeDetectorRef,
+  Component,
+  HostListener,
+  inject,
+  OnInit,
+} from '@angular/core';
 
 import { DownloadService } from '../../services/download.service';
 import { interval } from 'rxjs';
@@ -63,28 +69,47 @@ export class ListComponent implements OnInit {
   private downloadService: DownloadService = inject(DownloadService);
   private cdr: ChangeDetectorRef = inject(ChangeDetectorRef);
 
-  public displayedColumns: string[] = [
+  private displayedColumnsTablet: string[] = [
     'date',
     'key',
     'status',
     'archives',
     'actions',
   ];
+  private displayedColumnsPhone: string[] = ['date', 'key', 'actions'];
+
   public dataSource = ELEMENT_DATA;
+  public displayedColumns: string[] = [];
+  public minWidth: number = 480;
+  public screenWidth: number = window.innerWidth;
   public isLoading: boolean = true;
+
+  @HostListener('window:resize', ['$event'])
+  onResize() {
+    this.setColumns();
+  }
 
   ngOnInit(): void {
     this.getList();
+    this.setColumns();
   }
 
-  public getList(): void {
+  public downloadFile(filename: string): void {
+    this.downloadService.downloadFile(filename);
+  }
+
+  private getList(): void {
     interval(1500).subscribe(() => {
       this.isLoading = false;
       this.cdr.detectChanges();
     });
   }
 
-  public downloadFile(filename: string): void {
-    this.downloadService.downloadFile(filename);
+  private setColumns(): void {
+    this.screenWidth = window.innerWidth;
+    this.displayedColumns =
+      this.screenWidth > this.minWidth
+        ? this.displayedColumnsTablet
+        : this.displayedColumnsPhone;
   }
 }

@@ -10,6 +10,14 @@
 tr {
   font-size: 1.5rem;
   text-wrap: wrap;
+
+  & .date {
+    font-size: 1.2rem;
+
+    @include m.tablet {
+      font-size: 1.5rem;
+    }
+  }
 }
 
 .buttons-container {

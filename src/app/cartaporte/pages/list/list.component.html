@@ -7,12 +7,27 @@
   >
     <ng-container matColumnDef="date">
       <th mat-header-cell *matHeaderCellDef>Fecha</th>
-      <td mat-cell *matCellDef="let cartaporte">{{ cartaporte.date }}</td>
+      <td mat-cell *matCellDef="let cartaporte" class="date">
+        {{ cartaporte.date }}
+      </td>
     </ng-container>
 
     <ng-container matColumnDef="key">
-      <th mat-header-cell *matHeaderCellDef>Clave</th>
-      <td mat-cell *matCellDef="let cartaporte">{{ cartaporte.key }}</td>
+      <th mat-header-cell *matHeaderCellDef>
+        {{ screenWidth < minWidth ? "Clave / Estado" : "Clave" }}
+      </th>
+      <td mat-cell *matCellDef="let cartaporte">
+        {{ cartaporte.key }}
+
+        <!-- Status when screen is small -->
+        <div
+          *ngIf="screenWidth < minWidth"
+          [ngStyle]="{ color: cartaporte.status | generatedColor }"
+          class="bold status"
+        >
+          {{ cartaporte.status }}
+        </div>
+      </td>
     </ng-container>
 
     <ng-container matColumnDef="status">
@@ -50,7 +65,9 @@
     </ng-container>
 
     <ng-container matColumnDef="actions">
-      <th mat-header-cell *matHeaderCellDef>Acciones</th>
+      <th mat-header-cell *matHeaderCellDef>
+        {{ screenWidth < minWidth ? "Acciones / Archivos" : "Acciones" }}
+      </th>
       <td mat-cell *matCellDef="let cartaporte">
         <button
           [routerLink]="'/cartaporte/complete/' + cartaporte.key"
@@ -60,6 +77,27 @@
 
           <mat-icon class="visibility">visibility</mat-icon>
         </button>
+
+        <!-- Archives buttons when screen is small -->
+        <div
+          *ngIf="cartaporte.status === 'Generada' && screenWidth < minWidth"
+          class="buttons-container"
+        >
+          <button
+            mat-raised-button
+            color="warn"
+            (click)="downloadFile(cartaporte.pdfLink)"
+          >
+            <mat-icon>picture_as_pdf</mat-icon>
+          </button>
+          <button
+            mat-raised-button
+            color="accent"
+            (click)="downloadFile(cartaporte.xmlLink)"
+          >
+            <mat-icon>article </mat-icon>
+          </button>
+        </div>
       </td>
     </ng-container>
 
@@ -72,6 +110,7 @@
     <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
   </table>
 
+  <!-- Loader -->
   <div *ngIf="isLoading" class="loading-spinner">
     <mat-spinner />
     <span>Obteniendo informacion...</span>
