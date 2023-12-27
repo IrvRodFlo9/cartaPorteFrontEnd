@@ -12,13 +12,16 @@
       >
         Historial
       </a>
+      <mat-divider></mat-divider>
+      <h3 *ngIf="keyHistory.length > 0">Completar Carta Porte:</h3>
       <a
         *ngFor="let key of keyHistory"
+        class="key-link"
         [routerLink]="'complete/' + key"
         routerLinkActive="linkSelected"
         (click)="drawer.toggle()"
       >
-        Completar Carta Porte {{ key }}
+        {{ key }}
       </a>
     </nav>
     <button

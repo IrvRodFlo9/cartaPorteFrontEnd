@@ -32,10 +32,15 @@ mat-drawer {
 nav {
   display: flex;
   flex-direction: column;
-  font-size: 1.5rem;
+
+  a,
+  h3 {
+    padding: 1.9rem 0 1.9rem 1rem;
+    text-align: left;
+  }
 
   a {
-    padding: 1.9rem;
+    font-size: 1.6rem;
 
     @include m.desktop {
       font-size: 1.7rem;
@@ -47,6 +52,17 @@ nav {
         transform: scale(1.01);
       }
     }
+  }
+
+  h3 {
+    margin: 0;
+    font-weight: bold;
+    font-size: 1.8rem;
+  }
+
+  .key-link {
+    padding-left: 3rem;
+    font-size: 1.5rem;
   }
 }
 
