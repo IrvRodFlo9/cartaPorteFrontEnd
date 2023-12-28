@@ -19,33 +19,33 @@
       <td mat-cell *matCellDef="let cartaporte">
         {{ cartaporte.key }}
 
-        <!-- Status when screen is small -->
+        <!-- generated when screen is small -->
         <div
           *ngIf="screenWidth < minWidth"
-          [ngStyle]="{ color: cartaporte.status | generatedColor }"
-          class="bold status"
+          [ngStyle]="{ color: cartaporte.generated | generatedColor }"
+          class="bold generated"
         >
-          {{ cartaporte.status }}
+          {{ cartaporte.generated ? "Generada" : "Por Generar" }}
         </div>
       </td>
     </ng-container>
 
-    <ng-container matColumnDef="status">
+    <ng-container matColumnDef="generated">
       <th mat-header-cell *matHeaderCellDef>Estado</th>
       <td
         mat-cell
         *matCellDef="let cartaporte"
-        [ngStyle]="{ color: cartaporte.status | generatedColor }"
-        class="bold status"
+        [ngStyle]="{ color: cartaporte.generated | generatedColor }"
+        class="bold generated"
       >
-        {{ cartaporte.status }}
+        {{ cartaporte.generated ? "Generada" : "Por Generar" }}
       </td>
     </ng-container>
 
     <ng-container matColumnDef="archives">
       <th mat-header-cell *matHeaderCellDef>Archivos</th>
       <td mat-cell *matCellDef="let cartaporte">
-        <div *ngIf="cartaporte.status === 'Generada'" class="buttons-container">
+        <div *ngIf="cartaporte.generated" class="buttons-container">
           <button
             mat-raised-button
             color="warn"
@@ -80,7 +80,7 @@
 
         <!-- Archives buttons when screen is small -->
         <div
-          *ngIf="cartaporte.status === 'Generada' && screenWidth < minWidth"
+          *ngIf="cartaporte.generated && screenWidth < minWidth"
           class="buttons-container"
         >
           <button

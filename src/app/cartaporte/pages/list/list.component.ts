@@ -13,7 +13,7 @@ const ELEMENT_DATA = [
   {
     date: '20/12/2023',
     key: '#TUL-1023-201223',
-    status: 'Por Generar',
+    generated: false,
     pdfLink: 'documentoPDF.pdf',
     xmlLink: 'documentoXML.xml',
     completeLink: 'Ver',
@@ -21,7 +21,7 @@ const ELEMENT_DATA = [
   {
     date: '20/12/2023',
     key: '#PRM-1023-201223',
-    status: 'Por Generar',
+    generated: false,
     pdfLink: 'documentoPDF.pdf',
     xmlLink: 'documentoXML.xml',
     completeLink: 'Ver',
@@ -29,7 +29,7 @@ const ELEMENT_DATA = [
   {
     date: '20/12/2023',
     key: '#PCH-1023-201223',
-    status: 'Por Generar',
+    generated: false,
     pdfLink: 'documentoPDF.pdf',
     xmlLink: 'documentoXML.xml',
     completeLink: 'Ver',
@@ -37,7 +37,7 @@ const ELEMENT_DATA = [
   {
     date: '20/12/2023',
     key: '#UNI-1023-201223',
-    status: 'Generada',
+    generated: true,
     pdfLink: 'documentoPDF.pdf',
     xmlLink: 'documentoXML.xml',
     completeLink: 'Ver',
@@ -45,7 +45,7 @@ const ELEMENT_DATA = [
   {
     date: '20/12/2023',
     key: '#CTR-1023-201223',
-    status: 'Generada',
+    generated: true,
     pdfLink: 'documentoPDF.pdfe',
     xmlLink: 'documentoXML.xml',
     completeLink: 'Ver',
@@ -53,7 +53,7 @@ const ELEMENT_DATA = [
   {
     date: '20/12/2023',
     key: '#SLP-1023-201223',
-    status: 'Generada',
+    generated: true,
     pdfLink: 'documentoPDF.pdf',
     xmlLink: 'documentoXML.xml',
     completeLink: 'Ver',
@@ -72,7 +72,7 @@ export class ListComponent implements OnInit {
   private displayedColumnsTablet: string[] = [
     'date',
     'key',
-    'status',
+    'generated',
     'archives',
     'actions',
   ];
