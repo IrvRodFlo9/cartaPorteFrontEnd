@@ -1,17 +1,15 @@
 import { Component, OnDestroy, OnInit, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Subscription } from 'rxjs';
+import { Subscription, map } from 'rxjs';
 
 import { CartaPorteService } from '../../services/cartaporte.service';
 import { CatalogsService } from '../../services/catalogs.service';
 import { LocalStorageService } from '../../services/localStorage.service';
-
-import { ControlErrorsPipe } from './../../../shared/pipes/control-errors.pipe';
-
 import { Driver } from '../../interfaces/driver.interface';
-import { Location, originLocation } from '../../interfaces/locations.interface';
 import { Vehicle } from '../../interfaces/vehicle.interface';
+import { ControlErrorsPipe } from 'src/app/modules/shared/pipes/control-errors.pipe';
+import { originLocation, Location } from '../../interfaces/locations.interface';
 
 @Component({
   selector: 'app-complete',
@@ -22,8 +20,7 @@ export class CompleteComponent implements OnInit, OnDestroy {
   private cartaPorteService: CartaPorteService = inject(CartaPorteService);
   private catalogsService: CatalogsService = inject(CatalogsService);
   private fb: FormBuilder = inject(FormBuilder);
-  private localStorageService: LocalStorageService =
-    inject(LocalStorageService);
+  private localStorageService: LocalStorageService = inject(LocalStorageService);
   private route: ActivatedRoute = inject(ActivatedRoute);
   private router: Router = inject(Router);
 
@@ -31,7 +28,8 @@ export class CompleteComponent implements OnInit, OnDestroy {
   private controlErrors: ControlErrorsPipe = new ControlErrorsPipe();
 
   public key: string = '';
-  public locations?: Location[];
+  public locationID = 1; //TODO: Implement reception of locationID
+  public location?: Location;
   public drivers?: Driver[];
   public vehicles?: Vehicle[];
   public originLocation: Location = originLocation;
@@ -49,10 +47,7 @@ export class CompleteComponent implements OnInit, OnDestroy {
     this.form.get('vehicle')?.disable();
     this.form.get('driver')?.disable();
 
-    this.catalogsService
-      .getLocations()
-      .subscribe((locations) => (this.locations = locations));
-
+    this.getLocation();
     this.getVehicles();
     this.getDrivers();
   }
@@ -60,25 +55,34 @@ export class CompleteComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.routeSubscription.unsubscribe();
   }
-  /*
-  public getControlErrors(
-    controlName: string,
-    controlLabel: string = 'Campo'
-  ): string[] {
+
+  public getControlErrors(controlName: string, controlLabel: string = 'Campo'): string[] {
     if (!this.form.get(controlName)) return [];
 
-    const errors = this.controlErrors.transform(
-      this.form.get(controlName),
-      controlLabel
-    );
+    const errors = this.controlErrors.transform(this.form.get(controlName), controlLabel);
     return errors;
   }
-  */
 
   public onSubmit(): void {
     this.localStorageService.deleteKeyFromHistory(this.key);
 
     this.router.navigateByUrl('list');
+  }
+
+  private getLocation(): void {
+    this.catalogsService
+      .getLocations()
+      .pipe(
+        map(
+          (locations) =>
+            locations.filter(
+              (location) => location.idSAT_locations === this.locationID
+            )[0]
+        )
+      )
+      .subscribe((location) => {
+        this.location = location;
+      });
   }
 
   private getVehicles(): void {

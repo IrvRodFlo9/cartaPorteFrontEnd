@@ -1,6 +1,6 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import { AbstractControl } from '@angular/forms';
-import { ErrorMap, Gender } from '../interfaces/error-map.interface';
+import { ErrorMap, Gender } from './../interfaces/error-map.interface';
 
 const getLabelGender = (label: string): Gender => {
   const firstWord: string = label.split(' ')[0];
@@ -29,10 +29,7 @@ const errorMap: ErrorMap = {
   name: 'getErrors',
 })
 export class ControlErrorsPipe implements PipeTransform {
-  transform(
-    control: AbstractControl | null,
-    label: string = 'Campo'
-  ): string[] {
+  transform(control: AbstractControl | null, label: string = 'Campo'): string[] {
     if (!control || !(control.invalid && control.touched)) {
       return [];
     }

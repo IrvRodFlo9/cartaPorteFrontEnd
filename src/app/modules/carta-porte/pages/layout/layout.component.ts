@@ -19,8 +19,7 @@ import { LocalStorageService } from '../../services/localStorage.service';
 })
 export class LayoutComponent implements AfterViewInit, OnDestroy {
   private activatedRouter: ActivatedRoute = inject(ActivatedRoute);
-  private localStorageService: LocalStorageService =
-    inject(LocalStorageService);
+  private localStorageService: LocalStorageService = inject(LocalStorageService);
   private router: Router = inject(Router);
 
   private routerEvent: Subscription = new Subscription();
@@ -50,9 +49,7 @@ export class LayoutComponent implements AfterViewInit, OnDestroy {
   private setRouterEvents(): void {
     this.routerEvent = this.router.events
       .pipe(
-        filter(
-          (event): event is NavigationEnd => event instanceof NavigationEnd
-        ),
+        filter((event): event is NavigationEnd => event instanceof NavigationEnd),
         distinctUntilChanged()
       )
       .subscribe(() => this.setTitle());

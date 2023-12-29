@@ -1,32 +1,27 @@
-import { MaterialModule } from './../material/material.module';
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+
 import { ReactiveFormsModule } from '@angular/forms';
 
-import { CartaporteRoutingModule } from './cartaporte-routing.module';
+import { CartaPorteRoutingModule } from './carta-porte-routing.module';
+import { MaterialModule } from '../material/material.module';
 import { SharedModule } from '../shared/shared.module';
 
+import { GeneratedPipe } from './pipes/generated.pipe';
 import { GeneratedColorPipe } from './pipes/generated-color.pipe';
 
-import { CompleteComponent } from './pages/complete/complete.component';
 import { LayoutComponent } from './pages/layout/layout.component';
 import { ListComponent } from './pages/list/list.component';
-import { GeneratedPipe } from './pipes/generated.pipe';
+import { CompleteComponent } from './pages/complete/complete.component';
 
 @NgModule({
-  declarations: [
-    CompleteComponent,
-    GeneratedColorPipe,
-    GeneratedPipe,
-    LayoutComponent,
-    ListComponent,
-  ],
+  declarations: [GeneratedColorPipe, GeneratedPipe, LayoutComponent, ListComponent, CompleteComponent],
   imports: [
-    CartaporteRoutingModule,
+    CartaPorteRoutingModule,
     CommonModule,
     MaterialModule,
     ReactiveFormsModule,
     SharedModule,
   ],
 })
-export class CartaporteModule {}
+export class CartaPorteModule {}

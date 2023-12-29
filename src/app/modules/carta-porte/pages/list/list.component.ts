@@ -8,7 +8,6 @@ import {
 
 import { DownloadService } from '../../services/download.service';
 import { CartaPorteService } from '../../services/cartaporte.service';
-
 import { CartaPorte } from '../../interfaces/cartaporte.interface';
 
 @Component({
@@ -54,7 +53,6 @@ export class ListComponent implements OnInit {
     this.isLoading = true;
     this.cartaPorteService.getList().subscribe((cartasPorte: CartaPorte[]) => {
       this.cartasPorte = cartasPorte;
-      console.log(this.cartasPorte);
       this.isLoading = false;
       this.cdr.detectChanges();
     });

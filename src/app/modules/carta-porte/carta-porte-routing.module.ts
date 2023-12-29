@@ -1,8 +1,9 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
+
+import { LayoutComponent } from './pages/layout/layout.component';
 import { ListComponent } from './pages/list/list.component';
 import { CompleteComponent } from './pages/complete/complete.component';
-import { LayoutComponent } from './pages/layout/layout.component';
 
 const routes: Routes = [
   {
@@ -24,4 +25,4 @@ const routes: Routes = [
   imports: [RouterModule.forChild(routes)],
   exports: [RouterModule],
 })
-export class CartaporteRoutingModule {}
+export class CartaPorteRoutingModule {}

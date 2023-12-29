@@ -1,9 +1,8 @@
+
 export const environment = {
-  download: {
-    baseURL: '/assets',
-  },
+  production: true,
   api: {
     baseURL: 'http://api-cporte.grupostamaria.com.mx',
     tokenApi: 'Bearer',
-  },
+  }
 };

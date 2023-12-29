@@ -8,8 +8,11 @@ export class DownloadService {
   private http: HttpClient = inject(HttpClient);
 
   public downloadFile(filename: string): void {
-    const fileUrl = `${environment.download.baseURL}/${filename}`;
+    const fileUrl = `${environment.api.baseURL}/invoices/${filename}`;
 
+    console.log(fileUrl);
+
+    /*
     this.http.get(fileUrl, { responseType: 'blob' }).subscribe((data: Blob) => {
       const blob = new Blob([data], { type: 'application/octet-stream' });
 
@@ -21,5 +24,7 @@ export class DownloadService {
       document.body.removeChild(downloadInstance);
       window.URL.revokeObjectURL(downloadInstance.href);
     });
+
+    */
   }
 }
