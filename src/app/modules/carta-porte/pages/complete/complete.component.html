@@ -1,0 +1,62 @@
+<div class="container complete-container">
+  <form [formGroup]="form" (submit)="onSubmit()">
+    <h1>
+      Clave: <span class="key">{{ key }}</span>
+    </h1>
+
+    <fieldset>
+      <legend>Origen</legend>
+      <section></section>
+    </fieldset>
+
+    <fieldset>
+      <legend>Destino</legend>
+      <section></section>
+    </fieldset>
+
+    <fieldset>
+      <legend>Vehículo</legend>
+      <mat-form-field appearance="outline">
+        <mat-label>Vehículo</mat-label>
+        <mat-select formControlName="vehicle" placeholder="Seleccione Vehículo">
+          <mat-option
+            *ngFor="let vehicle of vehicles"
+            [value]="vehicle.idSAT_vehicle"
+          >
+            {{ vehicle.ControlGSM }}
+          </mat-option>
+        </mat-select>
+        <mat-error
+          *ngFor="let error of getControlErrors('vehicle', 'Vehículo')"
+        >
+          {{ error }}
+        </mat-error>
+      </mat-form-field>
+
+      <section></section>
+    </fieldset>
+
+    <fieldset>
+      <legend>Conductor</legend>
+      <mat-form-field appearance="outline">
+        <mat-label>Conductor</mat-label>
+        <mat-select formControlName="driver" placeholder="Seleccione Conductor">
+          <mat-option
+            *ngFor="let driver of drivers"
+            [value]="driver.idSAT_Driver"
+          >
+            {{ driver.NombreFigura }}
+          </mat-option>
+        </mat-select>
+        <mat-error
+          *ngFor="let error of getControlErrors('driver', 'Conductor')"
+        >
+          {{ error }}
+        </mat-error>
+      </mat-form-field>
+      <section></section>
+    </fieldset>
+
+    <button type="submit" mat-raised-button color="primary">Generar</button>
+  </form>
+</div>

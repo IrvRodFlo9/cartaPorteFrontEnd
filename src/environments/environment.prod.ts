@@ -1,6 +1,6 @@
 
 export const environment = {
-  production: false,
+  production: true,
   api: {
     baseURL: 'http://api-cporte.grupostamaria.com.mx',
     tokenApi: 'Bearer',

@@ -1,27 +1,27 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { PublicGuard } from './auth/guards/public.guard';
+
+import { PublicGuard } from './modules/auth/guards/public.guard';
 
 const routes: Routes = [
   {
     path: '',
-    redirectTo: 'cartaporte',
+    redirectTo: 'cartaPorte',
     pathMatch: 'full',
   },
   {
     path: 'login',
-    loadChildren: () => import('./auth/auth.module').then((m) => m.AuthModule),
+    loadChildren: () => import('./modules/auth/auth.module').then((m) => m.AuthModule),
     canActivate: [PublicGuard],
   },
   {
-    path: 'cartaporte',
+    path: 'cartaPorte',
     loadChildren: () =>
-      import('./cartaporte/cartaporte.module').then((m) => m.CartaporteModule),
+      import('./modules/carta-porte/carta-porte.module').then((m) => m.CartaPorteModule),
   },
-
   {
     path: '**',
-    redirectTo: 'cartaporte',
+    redirectTo: 'cartaPorte',
   },
 ];
 
