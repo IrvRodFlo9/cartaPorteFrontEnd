@@ -156,12 +156,7 @@
 
       <mat-form-field appearance="outline">
         <mat-label>Código Postal</mat-label>
-        <input
-          (input)="getInformationByPostalCode()"
-          matInput
-          formControlName="postalCode"
-          placeholder="Ej. 42184"
-        />
+        <input matInput formControlName="postalCode" placeholder="Ej. 42184" />
         <mat-error
           *ngFor="
             let errorMessage of getControlErrors('postalCode', 'Código postal')
@@ -173,14 +168,7 @@
 
       <mat-form-field appearance="outline">
         <mat-label>Estado</mat-label>
-        <mat-select
-          formControlName="state"
-          (selectionChange)="getLocalitiesAndMunicipalities()"
-        >
-          <mat-option *ngFor="let state of states" [value]="state.Value">
-            {{ state.Name }}
-          </mat-option>
-        </mat-select>
+        <mat-select formControlName="state"> </mat-select>
         <mat-error
           *ngFor="let errorMessage of getControlErrors('state', 'Estado')"
         >

@@ -13,15 +13,6 @@ import { LocalStorageService } from '../../services/localStorage.service';
 
 import { ControlErrorsPipe } from './../../../shared/pipes/control-errors.pipe';
 
-import {
-  Locality,
-  Municipality,
-  Neighborhood,
-  State,
-} from '../../interfaces/catalog-interface';
-import { Autotransport } from '../../interfaces/autotransport-interface';
-import { TransportFigure } from '../../interfaces/transport-figure-interface';
-
 @Component({
   selector: 'app-complete',
   templateUrl: './complete.component.html',
@@ -39,10 +30,6 @@ export class CompleteComponent implements OnInit, OnDestroy {
   private controlErrors: ControlErrorsPipe = new ControlErrorsPipe();
 
   public key: string = '';
-  public states: State[] = [];
-  public municipalities: Municipality[] = [];
-  public neighborhoods: Neighborhood[] = [];
-  public localities: Locality[] = [];
 
   public form: FormGroup = this.fb.group({
     permission: ['TPAF01', [Validators.required]],
@@ -79,10 +66,6 @@ export class CompleteComponent implements OnInit, OnDestroy {
     this.form.controls['municipality'].disable();
     this.form.controls['locality'].disable();
     this.form.controls['neighborhood'].disable();
-
-    this.cartaPorteService
-      .getMexicanStates()
-      .subscribe((states) => (this.states = states));
   }
 
   ngOnDestroy(): void {
@@ -102,62 +85,6 @@ export class CompleteComponent implements OnInit, OnDestroy {
     return errors;
   }
 
-  public getInformationByPostalCode(): void {
-    const postalCode = this.form.get('postalCode')?.value as string;
-
-    if (postalCode.length === 0) {
-      this.toggleControls([
-        this.form.controls['municipality'] as FormControl,
-        this.form.controls['locality'] as FormControl,
-        this.form.controls['state'] as FormControl,
-      ]);
-    }
-
-    if (postalCode.length !== 5) {
-      this.form.controls['neighborhood'].disable();
-      return;
-    }
-
-    this.cartaPorteService
-      .getNeighborhoodsByPostalCode(postalCode)
-      .pipe(
-        tap(() => this.form.controls['neighborhood'].reset('')),
-        tap(() => this.form.controls['neighborhood'].enable())
-      )
-      .subscribe((neighborhoods) => (this.neighborhoods = neighborhoods));
-
-    this.cartaPorteService
-      .getUbicationByPostalCode(postalCode)
-      .subscribe(({ StateCode, MunicipalityCode, LocationCode }) =>
-        this.getAndSetUbication(
-          StateCode,
-          MunicipalityCode || '',
-          LocationCode || ''
-        )
-      );
-  }
-
-  public getLocalitiesAndMunicipalities(): void {
-    const state = this.form.controls['state'].value;
-    console.log(state);
-
-    this.toggleControls([
-      this.form.controls['municipality'] as FormControl,
-      this.form.controls['locality'] as FormControl,
-    ]);
-
-    this.cartaPorteService
-      .getMunicipalitiesByState(state)
-      .subscribe((municipalities) => (this.municipalities = municipalities));
-
-    this.cartaPorteService
-      .getLocalitiesByState(state)
-      .subscribe((localities) => (this.localities = localities));
-
-    this.form.controls['municipality'].reset('');
-    this.form.controls['locality'].reset('');
-  }
-
   public onSubmit(): void {
     const autotransportJSON = this.buildAutotransport();
     const transportFigureJSON = [this.buildTransportFigure()];
@@ -168,46 +95,6 @@ export class CompleteComponent implements OnInit, OnDestroy {
     this.localStorageService.deleteKeyFromHistory(this.key);
 
     this.router.navigateByUrl('list');
-  }
-
-  private getAndSetUbication(
-    state: string,
-    municipality: string,
-    locality: string
-  ): void {
-    const stateControl: FormControl = this.form.controls[
-      'state'
-    ] as FormControl;
-
-    const municipalityControl: FormControl = this.form.controls[
-      'municipality'
-    ] as FormControl;
-
-    const localityControl: FormControl = this.form.controls[
-      'locality'
-    ] as FormControl;
-
-    const controls: FormControl[] = [
-      stateControl,
-      municipalityControl,
-      localityControl,
-    ];
-
-    this.toggleControls(controls);
-
-    this.cartaPorteService
-      .getMunicipalitiesByState(state)
-      .subscribe((municipalities) => (this.municipalities = municipalities));
-
-    this.cartaPorteService
-      .getLocalitiesByState(state)
-      .subscribe((localities) => (this.localities = localities));
-
-    stateControl.setValue(state);
-    municipalityControl.setValue(municipality);
-    localityControl.setValue(locality);
-
-    this.toggleControls(controls);
   }
 
   private toggleControls(controls: FormControl[]): void {
@@ -221,7 +108,7 @@ export class CompleteComponent implements OnInit, OnDestroy {
     });
   }
 
-  private buildAutotransport(): Autotransport {
+  private buildAutotransport() {
     const {
       permission,
       numberPermission,
@@ -233,7 +120,7 @@ export class CompleteComponent implements OnInit, OnDestroy {
       insurancePolicy,
     } = this.form.value;
 
-    const autotransport: Autotransport = {
+    const autotransport = {
       PermSCT: permission,
       NumPermisoSCT: numberPermission,
       IdentificacionVehicular: {
@@ -251,7 +138,7 @@ export class CompleteComponent implements OnInit, OnDestroy {
     return autotransport;
   }
 
-  private buildTransportFigure(): TransportFigure {
+  private buildTransportFigure() {
     const {
       name,
       rfc,
@@ -268,7 +155,7 @@ export class CompleteComponent implements OnInit, OnDestroy {
       reference,
     } = this.form.value;
 
-    const transportFigure: TransportFigure = {
+    const transportFigure = {
       TipoFigura: '01',
       RFCFigura: rfc,
       NumLicencia: licence,

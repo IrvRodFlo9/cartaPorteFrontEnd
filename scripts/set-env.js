@@ -3,15 +3,15 @@ const { writeFileSync, mkdirSync } = require("fs");
 
 const targetPath = "./src/environments/environment.ts";
 const envFileContent = `
-  export const environment = {
-    facturama: {
-      baseURL: '${process.env["facturamaBaseURL"]}',
-      auth: '${process.env["facturamaAuth"]}',
-    },
-    download: {
-      baseURL: '${process.env["downloadBaseURL"]}',
-    },
-  };
+export const environment = {
+  download: {
+    baseURL: '${process.env["downloadBaseURL"]}',
+  },
+  api: {
+    baseURL: '${process.env["baseURLApi"]}',
+    tokenApi: '${process.env["tokenApi"]}',
+  }
+};
 `;
 
 mkdirSync("./src/environments", { recursive: true });
