@@ -22,17 +22,10 @@
         <!-- generated when screen is small -->
         <div
           *ngIf="screenWidth < minWidth"
-<<<<<<< HEAD:src/app/cartaporte/pages/list/list.component.html
-          [ngStyle]="{ color: cartaporte.generated | generatedColor }"
-          class="bold generated"
-        >
-          {{ cartaporte.generated ? "Generada" : "Por Generar" }}
-=======
           [ngStyle]="{ color: cartaporte.Status | generatedColor }"
           class="bold status"
         >
           {{ cartaporte.Status | generated }}
->>>>>>> develop:src/app/modules/carta-porte/pages/list/list.component.html
         </div>
       </td>
     </ng-container>
@@ -42,28 +35,17 @@
       <td
         mat-cell
         *matCellDef="let cartaporte"
-<<<<<<< HEAD:src/app/cartaporte/pages/list/list.component.html
-        [ngStyle]="{ color: cartaporte.generated | generatedColor }"
-        class="bold generated"
-      >
-        {{ cartaporte.generated ? "Generada" : "Por Generar" }}
-=======
         [ngStyle]="{ color: cartaporte.Status | generatedColor }"
         class="bold status"
       >
         {{ cartaporte.Status | generated }}
->>>>>>> develop:src/app/modules/carta-porte/pages/list/list.component.html
       </td>
     </ng-container>
 
     <ng-container matColumnDef="archives">
       <th mat-header-cell *matHeaderCellDef>Archivos</th>
       <td mat-cell *matCellDef="let cartaporte">
-<<<<<<< HEAD:src/app/cartaporte/pages/list/list.component.html
-        <div *ngIf="cartaporte.generated" class="buttons-container">
-=======
         <div *ngIf="cartaporte.Status === 1" class="buttons-container">
->>>>>>> develop:src/app/modules/carta-porte/pages/list/list.component.html
           <button
             mat-raised-button
             color="warn"
@@ -97,11 +79,7 @@
 
         <!-- Archives buttons when screen is small -->
         <div
-<<<<<<< HEAD:src/app/cartaporte/pages/list/list.component.html
-          *ngIf="cartaporte.generated && screenWidth < minWidth"
-=======
           *ngIf="cartaporte.Status === 1 && screenWidth < minWidth"
->>>>>>> develop:src/app/modules/carta-porte/pages/list/list.component.html
           class="buttons-container"
         >
           <button

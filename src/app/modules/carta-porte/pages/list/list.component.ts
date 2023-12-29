@@ -7,63 +7,8 @@ import {
 } from '@angular/core';
 
 import { DownloadService } from '../../services/download.service';
-<<<<<<< HEAD:src/app/cartaporte/pages/list/list.component.ts
-import { interval } from 'rxjs';
-
-const ELEMENT_DATA = [
-  {
-    date: '20/12/2023',
-    key: '#TUL-1023-201223',
-    generated: false,
-    pdfLink: 'documentoPDF.pdf',
-    xmlLink: 'documentoXML.xml',
-    completeLink: 'Ver',
-  },
-  {
-    date: '20/12/2023',
-    key: '#PRM-1023-201223',
-    generated: false,
-    pdfLink: 'documentoPDF.pdf',
-    xmlLink: 'documentoXML.xml',
-    completeLink: 'Ver',
-  },
-  {
-    date: '20/12/2023',
-    key: '#PCH-1023-201223',
-    generated: false,
-    pdfLink: 'documentoPDF.pdf',
-    xmlLink: 'documentoXML.xml',
-    completeLink: 'Ver',
-  },
-  {
-    date: '20/12/2023',
-    key: '#UNI-1023-201223',
-    generated: true,
-    pdfLink: 'documentoPDF.pdf',
-    xmlLink: 'documentoXML.xml',
-    completeLink: 'Ver',
-  },
-  {
-    date: '20/12/2023',
-    key: '#CTR-1023-201223',
-    generated: true,
-    pdfLink: 'documentoPDF.pdfe',
-    xmlLink: 'documentoXML.xml',
-    completeLink: 'Ver',
-  },
-  {
-    date: '20/12/2023',
-    key: '#SLP-1023-201223',
-    generated: true,
-    pdfLink: 'documentoPDF.pdf',
-    xmlLink: 'documentoXML.xml',
-    completeLink: 'Ver',
-  },
-];
-=======
 import { CartaPorteService } from '../../services/cartaporte.service';
 import { CartaPorte } from '../../interfaces/cartaporte.interface';
->>>>>>> develop:src/app/modules/carta-porte/pages/list/list.component.ts
 
 @Component({
   selector: 'app-list',
