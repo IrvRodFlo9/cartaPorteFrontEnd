@@ -11,11 +11,13 @@ import { GeneratedColorPipe } from './pipes/generated-color.pipe';
 import { CompleteComponent } from './pages/complete/complete.component';
 import { LayoutComponent } from './pages/layout/layout.component';
 import { ListComponent } from './pages/list/list.component';
+import { GeneratedPipe } from './pipes/generated.pipe';
 
 @NgModule({
   declarations: [
     CompleteComponent,
     GeneratedColorPipe,
+    GeneratedPipe,
     LayoutComponent,
     ListComponent,
   ],

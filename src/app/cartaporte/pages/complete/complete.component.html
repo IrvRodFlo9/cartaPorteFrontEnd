@@ -1,5 +1,5 @@
 <div class="container complete-container">
-  <form (submit)="onSubmit()">
+  <form [formGroup]="form" (submit)="onSubmit()">
     <h1>
       Clave: <span class="key">{{ key }}</span>
     </h1>
@@ -18,7 +18,7 @@
       <legend>Vehículo</legend>
       <mat-form-field appearance="outline">
         <mat-label>Vehículo</mat-label>
-        <mat-select placeholder="Seleccionar Vehículo">
+        <mat-select formControlName="vehicle" placeholder="Seleccione Vehículo">
           <mat-option
             *ngFor="let vehicle of vehicles"
             [value]="vehicle.idSAT_vehicle"
@@ -26,6 +26,7 @@
             {{ vehicle.ControlGSM }}
           </mat-option>
         </mat-select>
+        <mat-error></mat-error>
       </mat-form-field>
 
       <section></section>
@@ -35,7 +36,7 @@
       <legend>Conductor</legend>
       <mat-form-field appearance="outline">
         <mat-label>Conductor</mat-label>
-        <mat-select placeholder="Seleccionar Conductor">
+        <mat-select formControlName="driver" placeholder="Seleccione Conductor">
           <mat-option
             *ngFor="let driver of drivers"
             [value]="driver.idSAT_Driver"
@@ -43,6 +44,7 @@
             {{ driver.NombreFigura }}
           </mat-option>
         </mat-select>
+        <mat-error></mat-error>
       </mat-form-field>
       <section></section>
     </fieldset>

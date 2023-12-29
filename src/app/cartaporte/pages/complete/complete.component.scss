@@ -26,18 +26,8 @@ fieldset {
   gap: 1.5rem;
   padding: 3rem;
 
-  @include m.tablet {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
   legend {
     font-size: 1.7rem;
     padding: 0 0.8rem;
-  }
-
-  .span-2 {
-    @include m.tablet {
-      grid-column: span 2;
-    }
   }
 }

@@ -7,58 +7,9 @@ import {
 } from '@angular/core';
 
 import { DownloadService } from '../../services/download.service';
-import { interval } from 'rxjs';
+import { CartaPorteService } from '../../services/cartaporte.service';
 
-const ELEMENT_DATA = [
-  {
-    date: '20/12/2023',
-    key: '#TUL-1023-201223',
-    status: 'Por Generar',
-    pdfLink: 'documentoPDF.pdf',
-    xmlLink: 'documentoXML.xml',
-    completeLink: 'Ver',
-  },
-  {
-    date: '20/12/2023',
-    key: '#PRM-1023-201223',
-    status: 'Por Generar',
-    pdfLink: 'documentoPDF.pdf',
-    xmlLink: 'documentoXML.xml',
-    completeLink: 'Ver',
-  },
-  {
-    date: '20/12/2023',
-    key: '#PCH-1023-201223',
-    status: 'Por Generar',
-    pdfLink: 'documentoPDF.pdf',
-    xmlLink: 'documentoXML.xml',
-    completeLink: 'Ver',
-  },
-  {
-    date: '20/12/2023',
-    key: '#UNI-1023-201223',
-    status: 'Generada',
-    pdfLink: 'documentoPDF.pdf',
-    xmlLink: 'documentoXML.xml',
-    completeLink: 'Ver',
-  },
-  {
-    date: '20/12/2023',
-    key: '#CTR-1023-201223',
-    status: 'Generada',
-    pdfLink: 'documentoPDF.pdfe',
-    xmlLink: 'documentoXML.xml',
-    completeLink: 'Ver',
-  },
-  {
-    date: '20/12/2023',
-    key: '#SLP-1023-201223',
-    status: 'Generada',
-    pdfLink: 'documentoPDF.pdf',
-    xmlLink: 'documentoXML.xml',
-    completeLink: 'Ver',
-  },
-];
+import { CartaPorte } from '../../interfaces/cartaporte.interface';
 
 @Component({
   selector: 'app-list',
@@ -66,6 +17,7 @@ const ELEMENT_DATA = [
   styleUrls: ['./list.component.scss'],
 })
 export class ListComponent implements OnInit {
+  private cartaPorteService: CartaPorteService = inject(CartaPorteService);
   private downloadService: DownloadService = inject(DownloadService);
   private cdr: ChangeDetectorRef = inject(ChangeDetectorRef);
 
@@ -78,11 +30,11 @@ export class ListComponent implements OnInit {
   ];
   private displayedColumnsPhone: string[] = ['date', 'key', 'actions'];
 
-  public dataSource = ELEMENT_DATA;
   public displayedColumns: string[] = [];
   public minWidth: number = 480;
   public screenWidth: number = window.innerWidth;
   public isLoading: boolean = true;
+  public cartasPorte?: CartaPorte[];
 
   @HostListener('window:resize', ['$event'])
   onResize() {
@@ -90,16 +42,19 @@ export class ListComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.getList();
     this.setColumns();
+    this.getCartasPorte();
   }
 
   public downloadFile(filename: string): void {
     this.downloadService.downloadFile(filename);
   }
 
-  private getList(): void {
-    interval(1500).subscribe(() => {
+  private getCartasPorte(): void {
+    this.isLoading = true;
+    this.cartaPorteService.getList().subscribe((cartasPorte: CartaPorte[]) => {
+      this.cartasPorte = cartasPorte;
+      console.log(this.cartasPorte);
       this.isLoading = false;
       this.cdr.detectChanges();
     });
