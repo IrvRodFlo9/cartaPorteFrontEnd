@@ -10,6 +10,7 @@ import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatTableModule } from '@angular/material/table';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatDividerModule } from '@angular/material/divider';
+import { CommonModule } from '@angular/common';
 
 @NgModule({
   exports: [
@@ -24,5 +25,6 @@ import { MatDividerModule } from '@angular/material/divider';
     MatToolbarModule,
     MatDividerModule,
   ],
+  imports: [CommonModule],
 })
 export class MaterialModule {}

@@ -15,7 +15,4 @@ export interface Location {
   subsidiary_id: number;
 }
 
-export enum TipoUbicacion {
-  Destino = 'Destino',
-  Origen = 'Origen',
-}
+export type TipoUbicacion = 'Destino' | 'Origen';
