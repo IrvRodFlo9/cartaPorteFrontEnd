@@ -32,3 +32,8 @@ export interface PostCartaPorte {
   FechaHoraSalida: string;
   FechaHoraLlegada: string;
 }
+
+export interface PostDates {
+  exitDate: string;
+  arriveDate: string;
+}

@@ -8,7 +8,8 @@ import {
 
 import { DownloadService } from '../../services/download.service';
 import { CartaPorteService } from '../../services/cartaporte.service';
-import { CartaPorte } from '../../interfaces/cartaporte.interface';
+
+import { CartaPorte } from '../../interfaces';
 
 @Component({
   selector: 'app-list',

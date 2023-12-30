@@ -1,6 +1,6 @@
 <div class="container">
   <table
-    *ngIf="!isLoading"
+    *ngIf="!isLoading; else loader"
     mat-table
     [dataSource]="cartasPorte!"
     class="mat-elevation-z8"
@@ -110,8 +110,7 @@
   </table>
 
   <!-- Loader -->
-  <div *ngIf="isLoading" class="loading-spinner">
-    <mat-spinner />
-    <span>Obteniendo informacion...</span>
-  </div>
+  <ng-template #loader>
+    <shared-loader text="Obteniendo información"
+  /></ng-template>
 </div>

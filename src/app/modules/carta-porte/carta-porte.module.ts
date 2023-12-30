@@ -7,20 +7,28 @@ import { CartaPorteRoutingModule } from './carta-porte-routing.module';
 import { MaterialModule } from '../material/material.module';
 import { SharedModule } from '../shared/shared.module';
 
-import { GeneratedPipe } from './pipes/generated.pipe';
 import { GeneratedColorPipe } from './pipes/generated-color.pipe';
+import { GeneratedPipe } from './pipes/generated.pipe';
+import { KmPipe } from './pipes/km.pipe';
+import { MexicoPipe } from './pipes/mexico.pipe';
 
+import { CompleteComponent } from './pages/complete/complete.component';
+import { InfoLabelComponent } from './components/info-label/info-label.component';
 import { LayoutComponent } from './pages/layout/layout.component';
 import { ListComponent } from './pages/list/list.component';
-import { CompleteComponent } from './pages/complete/complete.component';
+import { LoadingDialogComponent } from './components/loading-dialog/loading-dialog.component';
 
 @NgModule({
   declarations: [
+    CompleteComponent,
     GeneratedColorPipe,
     GeneratedPipe,
+    InfoLabelComponent,
+    KmPipe,
     LayoutComponent,
     ListComponent,
-    CompleteComponent,
+    MexicoPipe,
+    LoadingDialogComponent,
   ],
   imports: [
     CartaPorteRoutingModule,

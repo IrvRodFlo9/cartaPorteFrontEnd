@@ -4,33 +4,68 @@
       Clave: <span class="key">{{ orderNumber }}</span>
     </h1>
 
-    <fieldset>
+    <fieldset class="dates-fieldset">
       <legend>Salida y Llegada</legend>
 
       <mat-form-field appearance="outline">
         <mat-label>Fecha de Salida</mat-label>
         <input
-          formControlName="date"
+          formControlName="exitDate"
           matInput
-          (dateInput)="setDates()"
+          (dateInput)="setDay()"
           [matDatepicker]="picker"
         />
-        <mat-hint>MM/DD/YYYY</mat-hint>
+        <mat-hint>DD/MM/AAAA</mat-hint>
         <mat-datepicker-toggle matIconSuffix [for]="picker">
         </mat-datepicker-toggle>
         <mat-datepicker #picker />
         <mat-error
-          *ngFor="let error of getControlErrors('date', 'Fecha de Salida')"
+          *ngFor="let error of getControlErrors('exitDate', 'Fecha de Salida')"
         >
           {{ error }}
         </mat-error>
       </mat-form-field>
 
       <mat-form-field appearance="outline">
-        <mat-label>Fecha de Salida</mat-label>
-        <input formControlName="hour" matInput type="time" />
+        <mat-label>Hora de Salida</mat-label>
+        <input
+          formControlName="exitHour"
+          (input)="setHour()"
+          matInput
+          type="time"
+        />
         <mat-error
-          *ngFor="let error of getControlErrors('date', 'Fecha de Salida')"
+          *ngFor="let error of getControlErrors('exitHour', 'Hora de Salida')"
+        >
+          {{ error }}
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Fecha de Llegada</mat-label>
+        <input
+          formControlName="arriveDate"
+          matInput
+          placeholder="Fecha de Llegada"
+        />
+        <mat-hint>DD/MM/AAAA</mat-hint>
+        <mat-datepicker-toggle matIconSuffix />
+        <mat-error
+          *ngFor="
+            let error of getControlErrors('arriveDate', 'Fecha de Llegada')
+          "
+        >
+          {{ error }}
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Hora de Llegada</mat-label>
+        <input formControlName="arriveHour" matInput type="time" />
+        <mat-error
+          *ngFor="
+            let error of getControlErrors('arriveHour', 'Hora de Llegada')
+          "
         >
           {{ error }}
         </mat-error>
@@ -40,47 +75,33 @@
     <fieldset>
       <legend>Origen</legend>
       <section class="information-labels origin-labels">
-        <p class="label">
-          RFC:
-          <span>
-            {{ originLocation.RFCRemitenteDestinatario }}
-          </span>
-        </p>
-        <p class="label">
-          Códgo Postal: <span>{{ originLocation.CodigoPostal }}</span>
-        </p>
-        <p class="label">
-          Estado:
-          <span>
-            {{ originLocation.Estado + ", " + originLocation.Pais }}
-          </span>
-        </p>
+        <info-label labelName="RFC">
+          {{ originLocation.RFCRemitenteDestinatario }}
+        </info-label>
+        <info-label labelName="Código Postal"
+          >{{ originLocation.CodigoPostal }}
+        </info-label>
+        <info-label labelName="Estado">
+          {{ originLocation.Estado | mexico }}
+        </info-label>
       </section>
     </fieldset>
 
     <fieldset>
       <legend>Destino</legend>
-      <section class="information-labels" *ngIf="destinyLocation; else spinner">
-        <p class="label">
-          RFC:
-          <span>
-            {{ destinyLocation.RFCRemitenteDestinatario }}
-          </span>
-        </p>
-        <p class="label">
-          Distancia:
-          <span>{{ destinyLocation.DistanciaRecorrida + " km" }}</span>
-        </p>
-        <p class="label">
-          Códgo Postal: <span>{{ destinyLocation.CodigoPostal }}</span>
-        </p>
-
-        <p class="label">
-          Estado:
-          <span>
-            {{ destinyLocation.Estado + ", " + destinyLocation.Pais }}
-          </span>
-        </p>
+      <section class="information-labels" *ngIf="destinyLocation; else loader">
+        <info-label labelName="RFC">
+          {{ destinyLocation.RFCRemitenteDestinatario }}
+        </info-label>
+        <info-label labelName="Distancia">
+          {{ destinyLocation.DistanciaRecorrida | km }}
+        </info-label>
+        <info-label labelName="Códgo Postal">
+          {{ destinyLocation.CodigoPostal }}
+        </info-label>
+        <info-label labelName="Estado">
+          {{ destinyLocation.Estado | mexico }}
+        </info-label>
       </section>
     </fieldset>
 
@@ -108,30 +129,31 @@
       </mat-form-field>
 
       <section class="information-labels">
-        <p class="label">
-          Vehículo:
-          <span *ngIf="currentVehicle; else span">
-            {{
-              currentVehicle.Vehiculo + " (" + currentVehicle.AnioModeloVM + ")"
-            }}
-          </span>
-        </p>
-        <p class="label">
-          Número de Permiso: <span>{{ currentVehicle?.NumPermisoSCT }}</span>
-        </p>
-        <p class="label">
-          Placa: <span>{{ currentVehicle?.PlacaVM }}</span>
-        </p>
-        <p class="label">
-          Aseguradora: <span>{{ currentVehicle?.AseguraRespCivil }}</span>
-        </p>
-        <p class="label">
-          Identificación:
-          <span>{{ currentVehicle?.IdentificacionVehicular }}</span>
-        </p>
-        <p class="label">
-          Póliza de Seguro: <span>{{ currentVehicle?.PolizaRespCivil }}</span>
-        </p>
+        <info-label labelName="Vehículo">
+          {{
+            currentVehicle
+              ? currentVehicle.Vehiculo +
+                " (" +
+                currentVehicle.AnioModeloVM +
+                ")"
+              : ""
+          }}
+        </info-label>
+        <info-label labelName="Número de Permiso">
+          {{ currentVehicle?.NumPermisoSCT }}
+        </info-label>
+        <info-label labelName="Placa">
+          {{ currentVehicle?.PlacaVM }}
+        </info-label>
+        <info-label labelName="Aseguradora">
+          {{ currentVehicle?.AseguraRespCivil }}
+        </info-label>
+        <info-label labelName="Identificación">
+          {{ currentVehicle?.IdentificacionVehicular }}
+        </info-label>
+        <info-label labelName="Póliza de Seguro">
+          {{ currentVehicle?.PolizaRespCivil }}
+        </info-label>
       </section>
     </fieldset>
 
@@ -158,24 +180,18 @@
         </mat-error>
       </mat-form-field>
       <section class="information-labels">
-        <p class="label">
-          RFC:
-          <span>
-            {{ currentDriver?.RFCFigura }}
-          </span>
-        </p>
-        <p class="label">
-          Número de Licencia: <span>{{ currentDriver?.NumLicencia }}</span>
-        </p>
-        <p class="label">
-          Códgo Postal: <span>{{ currentDriver?.CodigoPostal }}</span>
-        </p>
-        <p class="label">
-          Estado:
-          <span *ngIf="currentDriver; else span">
-            {{ currentDriver.Estado + ", " + currentDriver.Pais }}
-          </span>
-        </p>
+        <info-label labelName="RFC">
+          {{ currentDriver?.RFCFigura }}
+        </info-label>
+        <info-label labelName="Número de Licencia">
+          {{ currentDriver?.NumLicencia }}
+        </info-label>
+        <info-label labelName="Código Postal">
+          {{ currentDriver?.CodigoPostal }}
+        </info-label>
+        <info-label labelName="Estado">
+          {{ currentDriver?.Estado | mexico }}
+        </info-label>
       </section>
     </fieldset>
 
@@ -184,9 +200,5 @@
 </div>
 
 <ng-template #span><span></span></ng-template>
-<ng-template #spinner>
-  <div class="loading-spinner">
-    <mat-spinner />
-    <span>Obteniendo informacion...</span>
-  </div>
-</ng-template>
+
+<ng-template #loader> <shared-loader text="Obteniendo destino" /></ng-template>
