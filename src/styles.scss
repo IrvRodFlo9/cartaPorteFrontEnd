@@ -2,7 +2,7 @@
 @use "variables" as v;
 @use "mixins" as m;
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
-@import "./styles/normalize.scss";
+@import "./assets//styles/normalize.scss";
 
 $green: v.$green;
 $black: v.$black;
