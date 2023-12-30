@@ -46,16 +46,19 @@ export class CompleteComponent implements OnInit, OnDestroy {
 
   public orderNumber: string = '';
   public originLocation: Location = originLocation;
+  public destinyLocation?: Location;
+  public locationLoading: boolean = false;
   public currentVehicle?: Vehicle;
   public currentDriver?: Driver;
-  public destinyLocation?: Location;
   public drivers?: Driver[];
   public vehicles?: Vehicle[];
-  public locationLoading: boolean = false;
+  public currentDate: Date = new Date();
 
   public form: FormGroup = this.fb.group({
     vehicle: ['', [Validators.required]],
     driver: ['', [Validators.required]],
+    date: ['', [Validators.required]],
+    hour: ['', [Validators.required]],
   });
 
   ngOnInit() {
@@ -83,6 +86,17 @@ export class CompleteComponent implements OnInit, OnDestroy {
       controlLabel
     );
     return errors;
+  }
+
+  public setDates(): void {
+    const exitDate: Date = this.form.get('date')?.value;
+
+    if (!exitDate) return;
+
+    const arriveDate: Date = this.getThreeWorkDaysAfter(exitDate);
+
+    const formatExitDate: string = this.formatDate(exitDate);
+    const formatArriveDate: string = this.formatDate(arriveDate);
   }
 
   public setVehicle(): void {
@@ -199,6 +213,29 @@ export class CompleteComponent implements OnInit, OnDestroy {
     const btnLabel: string = time ? '' : 'Cerrar';
 
     this.snackBar.open(message, btnLabel, config);
+  }
+
+  private formatDate(date: Date): string {
+    const year = date.getFullYear();
+    const month = ('0' + (date.getMonth() + 1)).slice(-2);
+    const day = ('0' + date.getDate()).slice(-2);
+    const hour = ('0' + date.getHours()).slice(-2);
+    const minutes = ('0' + date.getMinutes()).slice(-2);
+    const seconds = ('0' + date.getSeconds()).slice(-2);
+
+    return `${year}-${month}-${day}T${hour}:${minutes}:${seconds}`;
+  }
+
+  private getThreeWorkDaysAfter(date: Date): Date {
+    let afterDate: number | Date = date.setDate(date.getDate() + 3);
+    afterDate = new Date(afterDate);
+
+    if (afterDate.getDay() === 0) {
+      afterDate = afterDate.setDate(afterDate.getDate() + 1);
+      afterDate = new Date(afterDate);
+    }
+
+    return afterDate;
   }
 
   private buildCartaPorte(): PostCartaPorte | undefined {

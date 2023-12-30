@@ -6,6 +6,35 @@
 
     <fieldset>
       <legend>Salida y Llegada</legend>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Fecha de Salida</mat-label>
+        <input
+          formControlName="date"
+          matInput
+          (dateInput)="setDates()"
+          [matDatepicker]="picker"
+        />
+        <mat-hint>MM/DD/YYYY</mat-hint>
+        <mat-datepicker-toggle matIconSuffix [for]="picker">
+        </mat-datepicker-toggle>
+        <mat-datepicker #picker />
+        <mat-error
+          *ngFor="let error of getControlErrors('date', 'Fecha de Salida')"
+        >
+          {{ error }}
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline">
+        <mat-label>Fecha de Salida</mat-label>
+        <input formControlName="hour" matInput type="time" />
+        <mat-error
+          *ngFor="let error of getControlErrors('date', 'Fecha de Salida')"
+        >
+          {{ error }}
+        </mat-error>
+      </mat-form-field>
     </fieldset>
 
     <fieldset>
