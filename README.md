@@ -2,9 +2,15 @@
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.2.10.
 
-## Development server
+## Set environment
 
-Run `npm start` for a dev server and open in the browser. Also `npm run serve` for a dev server.
+1. Copy `.env.template` file
+2. Fill the environments variables, if isn't for production let `production=` empty
+3. Run `npm run envs` to generate the directory `src/environments` and the corresponding files
+
+## Development
+
+Run `npm start` for a dev server and open in the browser. You can also run `npm run serve` for a dev server without open the browser.
 
 ## Code scaffolding
 
@@ -12,7 +18,7 @@ Run `ng generate component component-name` to generate a new component. You can 
 
 ## Build
 
-Run `npm run all` to build the project in the directory `docs`. Before run `npm run install:devs` for install the dependencies necesary to make the build of the project.
+Run `npm run build:all` to build the project in the directory `docs`. Before run `npm run install:devs` for install the dependencies necesary to make the build of the project in `docs`.
 
 ### Classic Build
 

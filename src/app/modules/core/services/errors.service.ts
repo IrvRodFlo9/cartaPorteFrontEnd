@@ -1,7 +1,8 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
 import { AbstractControl } from '@angular/forms';
 
 import { InputErrorMap, Gender } from '../interfaces/error-map.interface';
+import { NotificationsService } from './notification.service';
 
 const inputErrorMap: InputErrorMap = {
   required: {
@@ -16,6 +17,8 @@ const inputErrorMap: InputErrorMap = {
 
 @Injectable({ providedIn: 'root' })
 export class ErrorsService {
+  private notificationsService: NotificationsService = inject(NotificationsService);
+
   public getFormControlErrors(
     control: AbstractControl | null,
     label: string = 'Campo'
@@ -37,6 +40,14 @@ export class ErrorsService {
     });
 
     return errorMessages.length > 0 ? errorMessages : [];
+  }
+
+  public notificationError(
+    message: string = 'Error',
+    time: number | undefined = undefined
+  ): void {
+    this.notificationsService.errorSnakBar(message, time);
+    throw new Error(message);
   }
 
   private getLabelGender = (label: string): Gender => {

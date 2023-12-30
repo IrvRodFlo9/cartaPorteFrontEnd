@@ -1,30 +1,20 @@
 import { Injectable, inject } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
 
 import { environment } from 'src/environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class DownloadService {
-  private http: HttpClient = inject(HttpClient);
+  private baseURL = `${environment.api.baseURL}/invoices`;
 
-  public downloadFile(filename: string): void {
-    const fileUrl = `${environment.api.baseURL}/invoices/${filename}`;
+  public downloadFile(fileName: string): void {
+    const fileUrl = `${this.baseURL}/${fileName}`;
 
-    console.log(fileUrl);
-
-    /*
-    this.http.get(fileUrl, { responseType: 'blob' }).subscribe((data: Blob) => {
-      const blob = new Blob([data], { type: 'application/octet-stream' });
-
-      const downloadInstance = document.createElement('a');
-      downloadInstance.href = window.URL.createObjectURL(blob);
-      downloadInstance.download = filename;
-      document.body.appendChild(downloadInstance);
-      downloadInstance.click();
-      document.body.removeChild(downloadInstance);
-      window.URL.revokeObjectURL(downloadInstance.href);
-    });
-
-    */
+    const downloadInstance = document.createElement('a');
+    downloadInstance.href = fileUrl;
+    downloadInstance.target = '_blank';
+    downloadInstance.download = fileName;
+    document.body.appendChild(downloadInstance);
+    downloadInstance.click();
+    document.body.removeChild(downloadInstance);
   }
 }

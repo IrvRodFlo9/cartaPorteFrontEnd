@@ -1,6 +1,5 @@
 import {
   AfterViewInit,
-  ChangeDetectionStrategy,
   ChangeDetectorRef,
   Component,
   OnDestroy,
@@ -11,23 +10,20 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Subscription, catchError, map, tap } from 'rxjs';
 
-import { MatSnackBar } from '@angular/material/snack-bar';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
-
 import { CartaPorteService } from '../../services/cartaporte.service';
 import { CatalogsService } from '../../services/catalogs.service';
 import { ErrorsService } from 'src/app/modules/core/services/errors.service';
 import { LocalStorageService } from '../../services/localStorage.service';
+import { NotificationsService } from 'src/app/modules/core/services/notification.service';
 
 import {
   Driver,
   Location,
   originLocation,
-  Vehicle,
   PostCartaPorte,
   PostDates,
+  Vehicle,
 } from '../../interfaces';
-import { LoadingDialogComponent } from '../../components/loading-dialog/loading-dialog.component';
 
 @Component({
   selector: 'app-complete',
@@ -39,13 +35,12 @@ export class CompleteComponent implements OnInit, AfterViewInit, OnDestroy {
   private catalogsService: CatalogsService = inject(CatalogsService);
   private errorsService: ErrorsService = inject(ErrorsService);
   private localStorageService: LocalStorageService = inject(LocalStorageService);
+  private notification: NotificationsService = inject(NotificationsService);
 
+  private cdr: ChangeDetectorRef = inject(ChangeDetectorRef);
   private fb: FormBuilder = inject(FormBuilder);
   private route: ActivatedRoute = inject(ActivatedRoute);
   private router: Router = inject(Router);
-  private snackBar: MatSnackBar = inject(MatSnackBar);
-  private cdr: ChangeDetectorRef = inject(ChangeDetectorRef);
-  private dialog: MatDialog = inject(MatDialog);
 
   private routeSubscription!: Subscription;
   private cartaPorteID?: number;
@@ -103,23 +98,6 @@ export class CompleteComponent implements OnInit, AfterViewInit, OnDestroy {
     return errors;
   }
 
-  public setDates(): void {
-    const exitDate: Date = this.form.get('exitDate')?.value;
-    const hour = this.form.get('exitHour')?.value;
-
-    if (!exitDate || !hour) return;
-
-    const arriveDate: Date = this.getThreeWorkDaysAfter(exitDate);
-
-    const formatExitDate: string = this.formatDate(exitDate, hour);
-    const formatArriveDate: string = this.formatDate(arriveDate, hour);
-
-    this.dates = {
-      exitDate: formatExitDate,
-      arriveDate: formatArriveDate,
-    };
-  }
-
   public setDay(): void {
     const exitDate: Date = this.form.get('exitDate')?.value;
     if (!exitDate) return;
@@ -147,41 +125,49 @@ export class CompleteComponent implements OnInit, AfterViewInit, OnDestroy {
     const selectedVehicle: number = this.form.get('vehicle')?.value;
     if (!selectedVehicle || !this.vehicles) return;
 
-    this.currentVehicle = this.vehicles
-      .filter((vehicle: Vehicle) => vehicle.idSAT_vehicle === selectedVehicle)
-      .shift();
+    this.currentVehicle = this.vehicles.find(
+      (vehicle: Vehicle) => vehicle.idSAT_vehicle === selectedVehicle
+    );
   }
 
   public setDriver(): void {
     const selectedDriver: number = this.form.get('driver')?.value;
     if (!selectedDriver || !this.drivers) return;
 
-    this.currentDriver = this.drivers
-      .filter((driver: Driver) => driver.idSAT_Driver === selectedDriver)
-      .shift();
+    this.currentDriver = this.drivers.find(
+      (driver: Driver) => driver.idSAT_Driver === selectedDriver
+    );
   }
 
   public onSubmit(): void {
     if (this.form.invalid) {
       this.form.markAllAsTouched();
-      this.errorSnakBar('Faltan campos por llenar', 1000);
+      this.errorsService.notificationError('Faltan campos por llenar', 1000);
       return;
     }
 
     const cartaPorte = this.buildCartaPorte();
     if (!cartaPorte) return;
 
-    const loadingDialog = this.loadingDialog();
-    this.cartaPorteService.postCartaPorte(cartaPorte).subscribe((result) => {
+    const loadingDialog = this.notification.loadingDialog(
+      `Carta Porte ${this.orderNumber}`
+    );
+
+    this.cartaPorteService.postCartaPorte(cartaPorte).subscribe((success) => {
       loadingDialog.close();
-      if (result === true) {
-        this.localStorageService.deleteKeyFromHistory(this.orderNumber);
-        this.successSnackBar();
-        this.router.navigateByUrl('list');
-        return;
+
+      if (success !== true) {
+        this.errorsService.notificationError(
+          `Error al generar Carta Porte ${this.orderNumber}`
+        );
       }
 
-      this.errorSnakBar(`Error al generar Carta Porte ${this.orderNumber}`);
+      this.localStorageService.deleteKeyFromHistory(this.orderNumber);
+      this.notification.successSnackBar(
+        `Carta Porte ${this.orderNumber} generada con éxito`
+      );
+
+      this.router.navigateByUrl('list');
     });
   }
 
@@ -190,34 +176,32 @@ export class CompleteComponent implements OnInit, AfterViewInit, OnDestroy {
       .getList()
       .pipe(
         map((cartasPorte) =>
-          cartasPorte.filter(
-            (cartasPorte) => cartasPorte.OrderNumber === this.orderNumber
-          )
+          cartasPorte.find((cartasPorte) => cartasPorte.OrderNumber === this.orderNumber)
         ),
-        map((filteredCartasPorte) => filteredCartasPorte[0]),
-        tap((cartaPorte) => {
-          this.cartaPorteID = cartaPorte.idSAT_CartaPorte;
-        }),
-        map((cartaPorte) => cartaPorte.idSAT_locationsDestino),
         catchError(() => {
-          this.errorSnakBar('Número de orden inválido');
           this.router.navigateByUrl('list');
+          this.errorsService.notificationError('Número de orden inválido');
           throw new Error("Carta Porte didn't found");
-        })
+        }),
+        tap((cartaPorte) => {
+          this.cartaPorteID = cartaPorte?.idSAT_CartaPorte;
+        }),
+        map((cartaPorte) => cartaPorte?.idSAT_locationsDestino)
       )
       .subscribe((locationID) => {
         this.getLocation(locationID);
       });
   }
 
-  private getLocation(locationID: number): void {
+  private getLocation(locationID: number | undefined): void {
+    if (!locationID) return;
+
     this.catalogsService
       .getLocations()
       .pipe(
         map((locations) =>
-          locations.filter((location) => location.idSAT_locations === locationID)
-        ),
-        map((locations) => locations[0])
+          locations.find((location) => location.idSAT_locations === locationID)
+        )
       )
       .subscribe((location) => {
         this.locationLoading = false;
@@ -230,10 +214,6 @@ export class CompleteComponent implements OnInit, AfterViewInit, OnDestroy {
   private getVehicles(): void {
     this.catalogsService.getVehicles().subscribe((vehicles) => {
       this.vehicles = vehicles;
-      if (vehicles.length === 0) {
-        this.errorSnakBar('Error al obtener vehículos');
-        throw new Error('Error getting the vehicles');
-      }
       this.form.get('vehicle')?.enable();
     });
   }
@@ -241,31 +221,25 @@ export class CompleteComponent implements OnInit, AfterViewInit, OnDestroy {
   private getDrivers(): void {
     this.catalogsService.getDrivers().subscribe((drivers) => {
       this.drivers = drivers;
-      if (drivers.length === 0) {
-        this.errorSnakBar('Error al obtener conductores');
-        throw new Error('Error getting the conductores');
-      }
       this.form.get('driver')?.enable();
     });
   }
 
-  private successSnackBar(): void {
-    this.snackBar.open('Carta porte generada con éxito', 'Cerrar', {
-      panelClass: ['success'],
-    });
-  }
+  private setDates(): void {
+    const exitDate: Date = this.form.get('exitDate')?.value;
+    const hour = this.form.get('exitHour')?.value;
 
-  private errorSnakBar(
-    message: string = 'Error',
-    time: number | undefined = undefined
-  ): void {
-    const config = {
-      panelClass: ['error'],
-      duration: time,
+    if (!exitDate || !hour) return;
+
+    const arriveDate: Date = this.getThreeWorkDaysAfter(exitDate);
+
+    const formatExitDate: string = this.formatDate(exitDate, hour);
+    const formatArriveDate: string = this.formatDate(arriveDate, hour);
+
+    this.dates = {
+      exitDate: formatExitDate,
+      arriveDate: formatArriveDate,
     };
-    const btnLabel: string = time ? '' : 'Cerrar';
-
-    this.snackBar.open(message, btnLabel, config);
   }
 
   private formatDate(date: Date, hour: string): string {
@@ -289,24 +263,20 @@ export class CompleteComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   private buildCartaPorte(): PostCartaPorte | undefined {
-    if (!this.currentDriver || !this.currentVehicle || !this.cartaPorteID || !this.dates)
-      return;
+    const { currentDriver, currentVehicle, cartaPorteID, dates } = this;
+
+    if (!currentDriver || !currentVehicle || !cartaPorteID || !dates) return;
 
     const cartaPorte: PostCartaPorte = {
-      idSAT_CartaPorte: this.cartaPorteID,
-      idSAT_Driver: this.currentDriver.idSAT_Driver,
-      idSAT_vehicle: this.currentVehicle.idSAT_vehicle,
-      FechaHoraSalida: this.dates.exitDate,
-      FechaHoraLlegada: this.dates.arriveDate,
+      idSAT_CartaPorte: cartaPorteID,
+      idSAT_Driver: currentDriver.idSAT_Driver,
+      idSAT_vehicle: currentVehicle.idSAT_vehicle,
+      FechaHoraSalida: dates.exitDate,
+      FechaHoraLlegada: dates.arriveDate,
     };
 
-    return cartaPorte;
-  }
+    console.log(cartaPorte); //TODO quitar
 
-  private loadingDialog(): MatDialogRef<LoadingDialogComponent> {
-    return this.dialog.open(LoadingDialogComponent, {
-      data: this.orderNumber,
-      disableClose: true,
-    });
+    return cartaPorte;
   }
 }

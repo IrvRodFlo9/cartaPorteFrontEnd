@@ -46,8 +46,8 @@ export class ListComponent implements OnInit {
     this.getCartasPorte();
   }
 
-  public downloadFile(filename: string): void {
-    this.downloadService.downloadFile(filename);
+  public downloadFile(fileName: string): void {
+    this.downloadService.downloadFile(fileName);
   }
 
   private getCartasPorte(): void {

@@ -6,16 +6,16 @@ export interface VehiclesResponse {
 export interface Vehicle {
   idSAT_vehicle: number;
   PermSCT: PermSCT;
-  NumPermisoSCT: string; //
-  IdentificacionVehicular: string; //
+  NumPermisoSCT: string;
+  IdentificacionVehicular: string;
   ConfigVehicular: ConfigVehicular;
   PesoBrutoVehicular: string;
-  PlacaVM: string; //
-  AnioModeloVM: string; //
-  AseguraRespCivil: string; //
-  PolizaRespCivil: string; //
-  ControlGSM: number; //Número de vehiculo
-  Vehiculo: string; //
+  PlacaVM: string;
+  AnioModeloVM: string;
+  AseguraRespCivil: string;
+  PolizaRespCivil: string;
+  ControlGSM: number;
+  Vehiculo: string;
 }
 
 export enum ConfigVehicular {

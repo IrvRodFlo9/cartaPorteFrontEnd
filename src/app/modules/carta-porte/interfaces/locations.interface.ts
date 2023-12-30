@@ -7,12 +7,12 @@ export interface Location {
   idSAT_locations: number;
   TipoUbicacion: TipoUbicacion;
   IDUbicacion: string;
-  DistanciaRecorrida: string; //
-  RFCRemitenteDestinatario: string; //
-  Pais: 'México'; //
-  CodigoPostal: string; //
-  Estado: string; //
-  subsidiary_id: number; //Unidad
+  DistanciaRecorrida: string;
+  RFCRemitenteDestinatario: string;
+  Pais: 'México';
+  CodigoPostal: string;
+  Estado: string;
+  subsidiary_id: number;
 }
 
 export type TipoUbicacion = 'Destino' | 'Origen';

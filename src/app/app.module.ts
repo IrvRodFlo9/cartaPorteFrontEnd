@@ -6,6 +6,8 @@ import { AppRoutingModule } from './app-routing.module';
 import { AuthModule } from './modules/auth/auth.module';
 
 import { MAT_DATE_LOCALE } from '@angular/material/core';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatDialogModule } from '@angular/material/dialog';
 
 import { AppComponent } from './app.component';
 
@@ -17,6 +19,8 @@ import { AppComponent } from './app.component';
     BrowserModule,
     HttpClientModule,
     AuthModule,
+    MatSnackBarModule,
+    MatDialogModule,
   ],
   providers: [{ provide: MAT_DATE_LOCALE, useValue: 'es-MX' }],
   bootstrap: [AppComponent],

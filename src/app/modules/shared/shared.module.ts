@@ -1,9 +1,10 @@
 import { NgModule } from '@angular/core';
-import { LoaderComponent } from './components/loader/loader.component';
 import { MaterialModule } from '../material/material.module';
 
+import { LoaderComponent, LoadingDialogComponent } from './components/';
+
 @NgModule({
-  declarations: [LoaderComponent],
+  declarations: [LoaderComponent, LoadingDialogComponent],
   imports: [MaterialModule],
   exports: [LoaderComponent],
 })

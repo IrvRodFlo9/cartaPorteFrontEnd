@@ -1,7 +1,9 @@
-import { Injectable } from '@angular/core';
+import { Injectable, inject } from '@angular/core';
+import { ErrorsService } from '../../core/services/errors.service';
 
 @Injectable({ providedIn: 'root' })
 export class LocalStorageService {
+  private errorService: ErrorsService = inject(ErrorsService);
   private readonly maxHistoryShow: number = 5;
   private readonly localStorageKey: string = 'history';
 
@@ -17,12 +19,10 @@ export class LocalStorageService {
 
   public loadLocalStorage(): void {
     try {
-      const storedHistory: string | null = localStorage.getItem(
-        this.localStorageKey
-      );
+      const storedHistory: string | null = localStorage.getItem(this.localStorageKey);
       storedHistory && (this.keysHistory = JSON.parse(storedHistory));
     } catch {
-      console.error('Error loading from localStorage');
+      this.errorService.notificationError('Error al leer listado');
     }
   }
 
@@ -43,9 +43,6 @@ export class LocalStorageService {
   }
 
   private saveHistoryInLocalStorage(): void {
-    localStorage.setItem(
-      this.localStorageKey,
-      JSON.stringify(this.keysHistory)
-    );
+    localStorage.setItem(this.localStorageKey, JSON.stringify(this.keysHistory));
   }
 }
