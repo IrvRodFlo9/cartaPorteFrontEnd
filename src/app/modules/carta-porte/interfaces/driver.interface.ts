@@ -6,12 +6,12 @@ export interface DriversResponse {
 export interface Driver {
   idSAT_Driver: number;
   TipoFigura: string;
-  RFCFigura: string;
-  NumLicencia: string;
+  RFCFigura: string; //
+  NumLicencia: string; //
   NombreFigura: string;
-  Estado: Estado;
-  Pais: 'México';
-  CodigoPostal: number;
+  Estado: Estado; //
+  Pais: 'México'; //
+  CodigoPostal: number; //
 }
 
 export enum Estado {

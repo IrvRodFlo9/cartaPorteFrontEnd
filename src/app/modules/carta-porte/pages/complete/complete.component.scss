@@ -41,3 +41,42 @@ fieldset {
     }
   }
 }
+
+.information-labels {
+  display: grid;
+
+  @include m.tablet {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 3rem;
+
+    &.origin-labels {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  .label {
+    font-size: 1.8rem;
+    display: flex;
+    flex-direction: column;
+
+    span {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      height: 4rem;
+      padding-left: 1.3rem;
+      color: v.$secondary;
+      border-bottom: 1px solid v.$primary;
+    }
+  }
+}
+
+.loading-spinner {
+  width: 100%;
+  display: flex;
+  padding-top: 5rem;
+  gap: 3rem;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}

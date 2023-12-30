@@ -5,20 +5,65 @@
     </h1>
 
     <fieldset>
+      <legend>Salida y Llegada</legend>
+    </fieldset>
+
+    <fieldset>
       <legend>Origen</legend>
-      <section></section>
+      <section class="information-labels origin-labels">
+        <p class="label">
+          RFC:
+          <span>
+            {{ originLocation.RFCRemitenteDestinatario }}
+          </span>
+        </p>
+        <p class="label">
+          Códgo Postal: <span>{{ originLocation.CodigoPostal }}</span>
+        </p>
+        <p class="label">
+          Estado:
+          <span>
+            {{ originLocation.Estado + ", " + originLocation.Pais }}
+          </span>
+        </p>
+      </section>
     </fieldset>
 
     <fieldset>
       <legend>Destino</legend>
-      <section></section>
+      <section class="information-labels" *ngIf="destinyLocation; else spinner">
+        <p class="label">
+          RFC:
+          <span>
+            {{ destinyLocation.RFCRemitenteDestinatario }}
+          </span>
+        </p>
+        <p class="label">
+          Distancia:
+          <span>{{ destinyLocation.DistanciaRecorrida + " km" }}</span>
+        </p>
+        <p class="label">
+          Códgo Postal: <span>{{ destinyLocation.CodigoPostal }}</span>
+        </p>
+
+        <p class="label">
+          Estado:
+          <span>
+            {{ destinyLocation.Estado + ", " + destinyLocation.Pais }}
+          </span>
+        </p>
+      </section>
     </fieldset>
 
     <fieldset>
       <legend>Vehículo</legend>
       <mat-form-field appearance="outline">
-        <mat-label>Vehículo</mat-label>
-        <mat-select formControlName="vehicle" placeholder="Seleccione Vehículo">
+        <mat-label>Número de Vehículo</mat-label>
+        <mat-select
+          formControlName="vehicle"
+          placeholder="Seleccione Vehículo"
+          (selectionChange)="setVehicle()"
+        >
           <mat-option
             *ngFor="let vehicle of vehicles"
             [value]="vehicle.idSAT_vehicle"
@@ -33,14 +78,43 @@
         </mat-error>
       </mat-form-field>
 
-      <section></section>
+      <section class="information-labels">
+        <p class="label">
+          Vehículo:
+          <span *ngIf="currentVehicle; else span">
+            {{
+              currentVehicle.Vehiculo + " (" + currentVehicle.AnioModeloVM + ")"
+            }}
+          </span>
+        </p>
+        <p class="label">
+          Número de Permiso: <span>{{ currentVehicle?.NumPermisoSCT }}</span>
+        </p>
+        <p class="label">
+          Placa: <span>{{ currentVehicle?.PlacaVM }}</span>
+        </p>
+        <p class="label">
+          Aseguradora: <span>{{ currentVehicle?.AseguraRespCivil }}</span>
+        </p>
+        <p class="label">
+          Identificación:
+          <span>{{ currentVehicle?.IdentificacionVehicular }}</span>
+        </p>
+        <p class="label">
+          Póliza de Seguro: <span>{{ currentVehicle?.PolizaRespCivil }}</span>
+        </p>
+      </section>
     </fieldset>
 
     <fieldset>
       <legend>Conductor</legend>
       <mat-form-field appearance="outline">
         <mat-label>Conductor</mat-label>
-        <mat-select formControlName="driver" placeholder="Seleccione Conductor">
+        <mat-select
+          formControlName="driver"
+          (selectionChange)="setDriver()"
+          placeholder="Seleccione Conductor"
+        >
           <mat-option
             *ngFor="let driver of drivers"
             [value]="driver.idSAT_Driver"
@@ -54,9 +128,36 @@
           {{ error }}
         </mat-error>
       </mat-form-field>
-      <section></section>
+      <section class="information-labels">
+        <p class="label">
+          RFC:
+          <span>
+            {{ currentDriver?.RFCFigura }}
+          </span>
+        </p>
+        <p class="label">
+          Número de Licencia: <span>{{ currentDriver?.NumLicencia }}</span>
+        </p>
+        <p class="label">
+          Códgo Postal: <span>{{ currentDriver?.CodigoPostal }}</span>
+        </p>
+        <p class="label">
+          Estado:
+          <span *ngIf="currentDriver; else span">
+            {{ currentDriver.Estado + ", " + currentDriver.Pais }}
+          </span>
+        </p>
+      </section>
     </fieldset>
 
     <button type="submit" mat-raised-button color="primary">Generar</button>
   </form>
 </div>
+
+<ng-template #span><span></span></ng-template>
+<ng-template #spinner>
+  <div class="loading-spinner">
+    <mat-spinner />
+    <span>Obteniendo informacion...</span>
+  </div>
+</ng-template>

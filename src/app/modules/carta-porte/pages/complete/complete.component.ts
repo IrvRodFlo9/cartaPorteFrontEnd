@@ -1,7 +1,14 @@
-import { Component, OnDestroy, OnInit, inject } from '@angular/core';
+import {
+  ChangeDetectionStrategy,
+  ChangeDetectorRef,
+  Component,
+  OnDestroy,
+  OnInit,
+  inject,
+} from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Observable, Subscription, catchError, map } from 'rxjs';
+import { Subscription, catchError, map, tap } from 'rxjs';
 
 import { MatSnackBar } from '@angular/material/snack-bar';
 
@@ -11,8 +18,9 @@ import { ErrorsService } from 'src/app/modules/core/services/errors.service';
 import { LocalStorageService } from '../../services/localStorage.service';
 
 import { Driver } from '../../interfaces/driver.interface';
-import { originLocation, Location } from '../../interfaces/locations.interface';
+import { Location, originLocation } from '../../interfaces/locations.interface';
 import { Vehicle } from '../../interfaces/vehicle.interface';
+import { PostCartaPorte } from '../../interfaces/cartaporte.interface';
 
 @Component({
   selector: 'app-complete',
@@ -22,6 +30,7 @@ import { Vehicle } from '../../interfaces/vehicle.interface';
 export class CompleteComponent implements OnInit, OnDestroy {
   private cartaPorteService: CartaPorteService = inject(CartaPorteService);
   private catalogsService: CatalogsService = inject(CatalogsService);
+  private cdr: ChangeDetectorRef = inject(ChangeDetectorRef);
   private errorsService: ErrorsService = inject(ErrorsService);
   private localStorageService: LocalStorageService = inject(LocalStorageService);
 
@@ -32,12 +41,17 @@ export class CompleteComponent implements OnInit, OnDestroy {
 
   private routeSubscription!: Subscription;
 
+  private locationID?: number;
+  private cartaPorteID?: number;
+
   public orderNumber: string = '';
   public originLocation: Location = originLocation;
-  public locationID?: number;
-  public location?: Location;
+  public currentVehicle?: Vehicle;
+  public currentDriver?: Driver;
+  public destinyLocation?: Location;
   public drivers?: Driver[];
   public vehicles?: Vehicle[];
+  public locationLoading: boolean = false;
 
   public form: FormGroup = this.fb.group({
     vehicle: ['', [Validators.required]],
@@ -71,13 +85,39 @@ export class CompleteComponent implements OnInit, OnDestroy {
     return errors;
   }
 
+  public setVehicle(): void {
+    const selectedVehicle: number = this.form.get('vehicle')?.value;
+    if (!selectedVehicle || !this.vehicles) return;
+
+    this.currentVehicle = this.vehicles
+      .filter((vehicle: Vehicle) => vehicle.idSAT_vehicle === selectedVehicle)
+      .shift();
+  }
+
+  public setDriver(): void {
+    const selectedDriver: number = this.form.get('driver')?.value;
+    if (!selectedDriver || !this.drivers) return;
+
+    this.currentDriver = this.drivers
+      .filter((driver: Driver) => driver.idSAT_Driver === selectedDriver)
+      .shift();
+  }
+
   public onSubmit(): void {
+    if (this.form.invalid) {
+      this.form.markAllAsTouched();
+      this.errorSnakBar('Faltan campos por llenar', 1000);
+      return;
+    }
+
     this.localStorageService.deleteKeyFromHistory(this.orderNumber);
     this.successSnackBar();
     this.router.navigateByUrl('list');
+    console.log(this.buildCartaPorte());
   }
 
   private setLocation(): void {
+    this.locationLoading = true;
     this.cartaPorteService
       .getList()
       .pipe(
@@ -86,7 +126,11 @@ export class CompleteComponent implements OnInit, OnDestroy {
             (cartasPorte) => cartasPorte.OrderNumber === this.orderNumber
           )
         ),
-        map((filteredCartasPorte) => filteredCartasPorte[0].idSAT_locationsDestino),
+        map((filteredCartasPorte) => filteredCartasPorte[0]),
+        tap((cartaPorte) => {
+          this.cartaPorteID = cartaPorte.idSAT_CartaPorte;
+        }),
+        map((cartaPorte) => cartaPorte.idSAT_locationsDestino),
         catchError(() => {
           this.errorSnakBar('Número de orden inválido');
           this.router.navigateByUrl('list');
@@ -109,8 +153,10 @@ export class CompleteComponent implements OnInit, OnDestroy {
         map((locations) => locations[0])
       )
       .subscribe((location) => {
+        this.locationLoading = false;
         this.localStorageService.organizeHistory(this.orderNumber);
-        this.location = location;
+        this.destinyLocation = location;
+        this.cdr.detectChanges();
       });
   }
 
@@ -142,9 +188,30 @@ export class CompleteComponent implements OnInit, OnDestroy {
     });
   }
 
-  private errorSnakBar(message: string = 'Error'): void {
-    this.snackBar.open(message, 'Cerrar', {
+  private errorSnakBar(
+    message: string = 'Error',
+    time: number | undefined = undefined
+  ): void {
+    const config = {
       panelClass: ['error'],
-    });
+      duration: time,
+    };
+    const btnLabel: string = time ? '' : 'Cerrar';
+
+    this.snackBar.open(message, btnLabel, config);
+  }
+
+  private buildCartaPorte(): PostCartaPorte | undefined {
+    if (!this.currentDriver || !this.currentVehicle || !this.cartaPorteID) return;
+
+    const cartaPorte: PostCartaPorte = {
+      idSAT_CartaPorte: this.cartaPorteID,
+      idSAT_Driver: this.currentDriver.idSAT_Driver,
+      idSAT_vehicle: this.currentVehicle.idSAT_vehicle,
+      FechaHoraSalida: '9:00',
+      FechaHoraLlegada: '10:00',
+    };
+
+    return cartaPorte;
   }
 }
