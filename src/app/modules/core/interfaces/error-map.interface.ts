@@ -1,4 +1,4 @@
-export interface ErrorMap {
+export interface InputErrorMap {
   [key: string]: {
     [gender in Gender]: string;
   };

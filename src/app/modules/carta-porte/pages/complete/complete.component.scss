@@ -31,3 +31,13 @@ fieldset {
     padding: 0 0.8rem;
   }
 }
+
+.mat-mdc-snack-bar-container {
+  &.snackbar {
+    --mdc-snackbar-container-color: v.$green !important;
+
+    .mdc-button__label {
+      color: v.$black;
+    }
+  }
+}

@@ -16,4 +16,6 @@ export class CartaPorteService {
       .get<CartaPorteListResponse>(url)
       .pipe(map((response) => (response.success ? response.vehicle : [])));
   }
+
+  public postCartaPorte(): void {}
 }

@@ -4,6 +4,25 @@
 @import "~@angular/material/prebuilt-themes/indigo-pink.css";
 @import "./styles/normalize.scss";
 
+$green: v.$green;
+$black: v.$black;
+
+.mat-mdc-snack-bar-container {
+  &.success {
+    --mdc-snackbar-container-color: #1d7906 !important;
+    .mdc-button__label {
+      color: #000;
+    }
+  }
+
+  &.error {
+    --mdc-snackbar-container-color: #931c0c !important;
+    .mdc-button__label {
+      color: #fff;
+    }
+  }
+}
+
 html,
 body {
   height: 100%;

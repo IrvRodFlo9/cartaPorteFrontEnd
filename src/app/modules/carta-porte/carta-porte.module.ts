@@ -15,7 +15,13 @@ import { ListComponent } from './pages/list/list.component';
 import { CompleteComponent } from './pages/complete/complete.component';
 
 @NgModule({
-  declarations: [GeneratedColorPipe, GeneratedPipe, LayoutComponent, ListComponent, CompleteComponent],
+  declarations: [
+    GeneratedColorPipe,
+    GeneratedPipe,
+    LayoutComponent,
+    ListComponent,
+    CompleteComponent,
+  ],
   imports: [
     CartaPorteRoutingModule,
     CommonModule,

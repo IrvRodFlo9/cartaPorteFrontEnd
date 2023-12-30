@@ -12,7 +12,7 @@ const routes: Routes = [
     children: [
       { path: 'list', component: ListComponent, data: { title: 'Historial' } },
       {
-        path: 'complete/:key',
+        path: 'complete/:orderNumber',
         component: CompleteComponent,
         data: { title: 'Completar Carta Porte' },
       },
