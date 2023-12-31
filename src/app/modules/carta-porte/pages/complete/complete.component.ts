@@ -176,17 +176,20 @@ export class CompleteComponent implements OnInit, AfterViewInit, OnDestroy {
       .getList()
       .pipe(
         map((cartasPorte) =>
-          cartasPorte.find((cartasPorte) => cartasPorte.OrderNumber === this.orderNumber)
+          cartasPorte.filter(
+            (cartasPorte) => cartasPorte.OrderNumber === this.orderNumber
+          )
         ),
+        map((filteredCartasPorte) => filteredCartasPorte[0]),
+        tap((cartaPorte) => {
+          this.cartaPorteID = cartaPorte.idSAT_CartaPorte;
+        }),
+        map((cartaPorte) => cartaPorte.idSAT_locationsDestino),
         catchError(() => {
           this.router.navigateByUrl('list');
           this.errorsService.notificationError('Número de orden inválido');
           throw new Error("Carta Porte didn't found");
-        }),
-        tap((cartaPorte) => {
-          this.cartaPorteID = cartaPorte?.idSAT_CartaPorte;
-        }),
-        map((cartaPorte) => cartaPorte?.idSAT_locationsDestino)
+        })
       )
       .subscribe((locationID) => {
         this.getLocation(locationID);
@@ -274,8 +277,6 @@ export class CompleteComponent implements OnInit, AfterViewInit, OnDestroy {
       FechaHoraSalida: dates.exitDate,
       FechaHoraLlegada: dates.arriveDate,
     };
-
-    console.log(cartaPorte); //TODO quitar
 
     return cartaPorte;
   }
