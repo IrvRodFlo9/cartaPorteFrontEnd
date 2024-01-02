@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { Observable, map } from 'rxjs';
+import { Observable, catchError, map, of } from 'rxjs';
 
 import { environment } from 'src/environments/environment';
 
@@ -35,8 +35,12 @@ export class CartaPorteService {
   public postCartaPorte(cartaPorte: PostCartaPorte): Observable<boolean> {
     const url: string = `${this.baseURL}/new`;
 
-    return this.http
-      .post<PostCartaPorteResponse>(url, cartaPorte)
-      .pipe(map((ans) => ans.success));
+    return this.http.post<PostCartaPorteResponse>(url, cartaPorte).pipe(
+      catchError(() => {
+        this.errorService.notificationError('Error al generar carta porte');
+        return of({ success: false });
+      }),
+      map((ans) => ans.success)
+    );
   }
 }

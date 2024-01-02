@@ -70,7 +70,7 @@
       </th>
       <td mat-cell *matCellDef="let cartaporte">
         <button
-          *ngIf="cartaporte.Status !== 0"
+          *ngIf="cartaporte.Status === 0"
           [routerLink]="'/cartaPorte/complete/' + cartaporte.OrderNumber"
           mat-raised-button
         >
