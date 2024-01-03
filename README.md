@@ -5,8 +5,9 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 ## Set environment
 
 1. Copy `.env.template` file
-2. Fill the environments variables, if isn't for production let `production=` empty
-3. Run `npm run envs` to generate the directory `src/environments` and the corresponding files
+2. Rename like `.env`
+3. Fill the environments variables, if isn't for production let `production=` empty
+4. Run `npm run envs` to generate the directory `src/environments` and the corresponding files
 
 ## Development
 

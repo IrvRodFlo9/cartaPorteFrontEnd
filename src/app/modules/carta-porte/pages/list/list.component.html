@@ -5,27 +5,29 @@
     [dataSource]="cartasPorte!"
     class="mat-elevation-z8"
   >
-    <ng-container matColumnDef="date">
+    <!--
+          <ng-container matColumnDef="date">
       <th mat-header-cell *matHeaderCellDef>Fecha</th>
       <td mat-cell *matCellDef="let cartaporte" class="date">
-        {{ cartaporte.FechaHoraSalida }}
+        {{ cartaporte.fecha_hora_salida }}
       </td>
     </ng-container>
+     -->
 
     <ng-container matColumnDef="key">
       <th mat-header-cell *matHeaderCellDef>
         {{ screenWidth < minWidth ? "Clave / Estado" : "Clave" }}
       </th>
       <td mat-cell *matCellDef="let cartaporte">
-        {{ cartaporte.OrderNumber }}
+        {{ cartaporte.order_number }}
 
         <!-- generated when screen is small -->
         <div
           *ngIf="screenWidth < minWidth"
-          [ngStyle]="{ color: cartaporte.Status | generatedColor }"
+          [ngStyle]="{ color: cartaporte.status | generatedColor }"
           class="bold status"
         >
-          {{ cartaporte.Status | generated }}
+          {{ cartaporte.status | generated }}
         </div>
       </td>
     </ng-container>
@@ -35,17 +37,17 @@
       <td
         mat-cell
         *matCellDef="let cartaporte"
-        [ngStyle]="{ color: cartaporte.Status | generatedColor }"
+        [ngStyle]="{ color: cartaporte.status | generatedColor }"
         class="bold status"
       >
-        {{ cartaporte.Status | generated }}
+        {{ cartaporte.status | generated }}
       </td>
     </ng-container>
 
     <ng-container matColumnDef="archives">
       <th mat-header-cell *matHeaderCellDef>Archivos</th>
       <td mat-cell *matCellDef="let cartaporte">
-        <div *ngIf="cartaporte.Status === 1" class="buttons-container">
+        <div *ngIf="cartaporte.status === 1" class="buttons-container">
           <button
             mat-raised-button
             color="warn"
@@ -70,8 +72,8 @@
       </th>
       <td mat-cell *matCellDef="let cartaporte">
         <button
-          *ngIf="cartaporte.Status === 0"
-          [routerLink]="'/cartaPorte/complete/' + cartaporte.OrderNumber"
+          *ngIf="cartaporte.status === 0"
+          [routerLink]="'/cartaPorte/complete/' + cartaporte.order_number"
           mat-raised-button
         >
           Completar
@@ -80,7 +82,7 @@
 
         <!-- Archives buttons when screen is small -->
         <div
-          *ngIf="cartaporte.Status === 1 && screenWidth < minWidth"
+          *ngIf="cartaporte.status === 1 && screenWidth < minWidth"
           class="buttons-container"
         >
           <button

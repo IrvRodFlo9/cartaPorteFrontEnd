@@ -177,14 +177,14 @@ export class CompleteComponent implements OnInit, AfterViewInit, OnDestroy {
       .pipe(
         map((cartasPorte) =>
           cartasPorte.filter(
-            (cartasPorte) => cartasPorte.OrderNumber === this.orderNumber
+            (cartasPorte) => cartasPorte.order_number === this.orderNumber
           )
         ),
         map((filteredCartasPorte) => filteredCartasPorte[0]),
         tap((cartaPorte) => {
-          this.cartaPorteID = cartaPorte.idSAT_CartaPorte;
+          this.cartaPorteID = cartaPorte.idsat_carta_porte;
         }),
-        map((cartaPorte) => cartaPorte.idSAT_locationsDestino),
+        map((cartaPorte) => cartaPorte.idsat_locations_destino),
         catchError(() => {
           this.router.navigateByUrl('list');
           this.errorsService.notificationError('Número de orden inválido');
@@ -271,11 +271,11 @@ export class CompleteComponent implements OnInit, AfterViewInit, OnDestroy {
     if (!currentDriver || !currentVehicle || !cartaPorteID || !dates) return;
 
     const cartaPorte: PostCartaPorte = {
-      idSAT_CartaPorte: cartaPorteID,
-      idSAT_Driver: currentDriver.idSAT_Driver,
-      idSAT_vehicle: currentVehicle.idSAT_vehicle,
-      FechaHoraSalida: dates.exitDate,
-      FechaHoraLlegada: dates.arriveDate,
+      idsat_carta_porte: cartaPorteID,
+      idsat_driver: currentDriver.idSAT_Driver,
+      idsat_vehicle: currentVehicle.idSAT_vehicle,
+      fecha_hora_salida: dates.exitDate,
+      fecha_hora_llegada: dates.arriveDate,
     };
 
     return cartaPorte;
