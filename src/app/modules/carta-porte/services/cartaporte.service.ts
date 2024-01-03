@@ -35,12 +35,8 @@ export class CartaPorteService {
   public postCartaPorte(cartaPorte: PostCartaPorte): Observable<boolean> {
     const url: string = `${this.baseURL}/new`;
 
-    return this.http.post<PostCartaPorteResponse>(url, cartaPorte).pipe(
-      catchError(() => {
-        this.errorService.notificationError('Error al generar carta porte');
-        return of({ success: false });
-      }),
-      map((ans) => ans.success)
-    );
+    return this.http
+      .post<PostCartaPorteResponse>(url, cartaPorte)
+      .pipe(map((ans) => ans.success));
   }
 }

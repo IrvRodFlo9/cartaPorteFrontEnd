@@ -22,13 +22,13 @@ export class ListComponent implements OnInit {
   private cdr: ChangeDetectorRef = inject(ChangeDetectorRef);
 
   private displayedColumnsTablet: string[] = [
-    //TODO'date',
+    'date',
     'key',
     'generated',
     'archives',
     'actions',
   ];
-  private displayedColumnsPhone: string[] = [/* TODO'date' */ 'key', 'actions'];
+  private displayedColumnsPhone: string[] = ['date', 'key', 'actions'];
 
   public displayedColumns: string[] = [];
   public minWidth: number = 480;

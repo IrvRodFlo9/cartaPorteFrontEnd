@@ -2,17 +2,15 @@
   <table
     *ngIf="!isLoading; else loader"
     mat-table
-    [dataSource]="cartasPorte!"
+    [dataSource]="cartasPorte! | sortList"
     class="mat-elevation-z8"
   >
-    <!--
-          <ng-container matColumnDef="date">
+    <ng-container matColumnDef="date">
       <th mat-header-cell *matHeaderCellDef>Fecha</th>
       <td mat-cell *matCellDef="let cartaporte" class="date">
-        {{ cartaporte.fecha_hora_salida }}
+        {{ cartaporte.order_number | dateCP }}
       </td>
     </ng-container>
-     -->
 
     <ng-container matColumnDef="key">
       <th mat-header-cell *matHeaderCellDef>
